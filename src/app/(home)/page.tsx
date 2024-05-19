@@ -1,8 +1,8 @@
+import Connector from "./Connector"
+
 const Home = () => {
   return (
-    <div>
-      this is the goddamn main fuking page
-    </div>
+    <Connector />
   )
 }
 

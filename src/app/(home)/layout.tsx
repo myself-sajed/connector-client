@@ -1,5 +1,5 @@
 import "../globals.css"
-import { Sora as FontSans } from "next/font/google"
+import { Inter as FontSans } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 
@@ -11,10 +11,12 @@ const fontSans = FontSans({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <title>Connector | Sajed</title>
+      </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "bg-background font-sans antialiased",
           fontSans.variable
         )}
       >
