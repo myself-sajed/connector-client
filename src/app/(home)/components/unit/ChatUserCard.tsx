@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge'
 
 const ChatUserCard = () => {
     return (
-        <div className="flex items-start justify-between px-2 py-4 cursor-pointer">
+        <div className="flex items-start justify-between px-2 py-4 cursor-pointer hover:bg-muted transition duration-200">
             <div className="flex items-start gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
                     <AvatarImage src="/avatars/01.png" alt="Avatar" />
