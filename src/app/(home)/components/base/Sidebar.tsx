@@ -1,12 +1,16 @@
 import {
     Book,
     Bot,
+    CircleDashed,
     Code2,
     LifeBuoy,
+    MessageCircle,
+    Settings,
     Settings2,
     SquareTerminal,
     SquareUser,
     Triangle,
+    Users,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -35,13 +39,13 @@ const Sidebar = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="rounded-lg bg-muted"
-                                aria-label="Playground"
+                                aria-label="Chats"
                             >
-                                <SquareTerminal className="size-5" />
+                                <MessageCircle className="size-5" />
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="right" sideOffset={5}>
-                            Playground
+                            Chats
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -53,33 +57,13 @@ const Sidebar = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="rounded-lg"
-                                aria-label="Models"
+                                aria-label="Communities"
                             >
-                                <Bot className="size-5" />
+                                <Users className="size-5" />
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="right" sideOffset={5}>
-                            Models
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-
-
-
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="rounded-lg"
-                                aria-label="API"
-                            >
-                                <Code2 className="size-5" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="right" sideOffset={5}>
-                            API
+                            Communities
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -93,34 +77,13 @@ const Sidebar = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="rounded-lg"
-                                aria-label="Documentation"
+                                aria-label="Status"
                             >
-                                <Book className="size-5" />
+                                <CircleDashed className="size-5" />
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="right" sideOffset={5}>
-                            Documentation
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-
-
-
-
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="rounded-lg"
-                                aria-label="Settings"
-                            >
-                                <Settings2 className="size-5" />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="right" sideOffset={5}>
-                            Settings
+                            Status
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
@@ -135,13 +98,13 @@ const Sidebar = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="mt-auto rounded-lg"
-                                aria-label="Help"
+                                aria-label="Settings"
                             >
-                                <LifeBuoy className="size-5" />
+                                <Settings className="size-5" />
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="right" sideOffset={5}>
-                            Help
+                            Settings
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
