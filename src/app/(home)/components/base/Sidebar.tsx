@@ -58,13 +58,13 @@ const Sidebar = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="rounded-lg"
-                                aria-label="Communities"
+                                aria-label="Start a new chat"
                             >
                                 <Users className="size-5" />
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent side="right" sideOffset={5}>
-                            Communities
+                            Start a new chat
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
