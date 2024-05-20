@@ -59,7 +59,7 @@ const ChatSection = () => {
 
                 <div ref={chatEndRef} />
                 {showScrollButton && (
-                    <ChevronDown onClick={scrollToBottom} className='text-muted-foreground absolute bottom-5 z-30 rounded-full right-6 drop-shadow-md cursor-pointer bg-white shadow-md p-2' size={40} strokeWidth={2} />
+                    <ChevronDown onClick={scrollToBottom} className='text-muted-foreground absolute bottom-5 z-30 rounded-full right-6 drop-shadow-md cursor-pointer bg-white hover:bg-gray-100 shadow-md p-2' size={40} strokeWidth={2} />
                 )}
             </div>
         </div>
