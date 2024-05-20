@@ -1,9 +1,11 @@
-import React from 'react'
+import OtherPersonBubble from '../unit/OtherPersonBubble'
+import YourBubble from '../unit/YourBubble'
 
 const ChatBubbles = () => {
     return (
         <div className='flex-1'>
-            chat will be here
+            <OtherPersonBubble />
+            <YourBubble />
         </div>
     )
 }
