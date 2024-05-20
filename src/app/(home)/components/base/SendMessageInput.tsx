@@ -13,7 +13,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 const SendMessageInput = () => {
     return (
-        <div className="relative rounded-lg border bg-background">
+        <div className="relative rounded-lg border bg-background mt-2">
             <Textarea
                 placeholder="Type your message here..."
                 className="resize-none border-none p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
