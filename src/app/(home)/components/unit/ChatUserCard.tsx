@@ -6,7 +6,7 @@ const ChatUserCard = () => {
         <div className="flex items-start justify-between px-2 py-4 cursor-pointer hover:bg-muted transition duration-200">
             <div className="flex items-start gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                    <AvatarImage src="/assets/sender.jpg" alt="Avatar" />
                     <AvatarFallback>OM</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
