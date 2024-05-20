@@ -5,8 +5,8 @@ function ChatBubble({ message, isMe }: { message: string, isMe?: boolean }) {
         <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
             <div
                 className={`max-w-xs rounded-lg px-4 py-2 transition duration-200 group
-                        ${isMe ? 'hover:bg-blue-500 bg-blue-600 text-right text-white'
-                        : 'hover:bg-gray-100 bg-gray-200 text-left text-black'} relative`
+                        ${isMe ? 'bg-primary text-right text-white'
+                        : 'bg-gray-200 text-left text-black'} relative`
                 }
                 style={{
                     borderBottomLeftRadius: isMe ? '16px' : '0',
