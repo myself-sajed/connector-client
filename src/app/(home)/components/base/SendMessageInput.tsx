@@ -18,7 +18,7 @@ const SendMessageInput = () => {
                 placeholder="Type your message here..."
                 className="resize-none border-none p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
             />
-            <div className="flex items-center p-3 pt-2">
+            <div className="flex items-center p-3 pt-2 border-t">
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
