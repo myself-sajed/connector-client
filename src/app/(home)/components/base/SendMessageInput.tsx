@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import socket from "@/lib/client-socket"
-import { IMessages } from "@/lib/constants"
+import { IMessages } from "@/lib/types"
 import { useEffect, useRef } from "react"
 
 const SendMessageInput = ({ setMessages }: { setMessages: React.Dispatch<React.SetStateAction<IMessages[]>> }) => {

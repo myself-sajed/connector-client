@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ChatBubble from './ChatBubble'
 import { ChevronDown } from 'lucide-react';
 import { handleScroll, scrollToBottom, scrollToBottomInstantly } from '@/app/helpers/chatSectionHelpers';
-import { IMessages } from '@/lib/constants';
+import { IMessages } from '@/lib/types';
 
 
 
