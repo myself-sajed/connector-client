@@ -4,17 +4,24 @@ import { useState } from "react"
 import ChatSection from "./ChatSection"
 import Empty from "./Empty"
 import SendMessageInput from "./SendMessageInput"
+import { RootState } from "@/redux/store"
+import { useSelector } from "react-redux"
 
 const ChatContainer = () => {
 
     const [messages, setMessages] = useState(messagesArray)
+    const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 
     return (
         <div className="relative rounded-xl bg-muted/50 p-4 col-span-2 max-h-[calc(100vh-90px)] overflow-hidden">
-            <>
-                <ChatSection messages={messages} />
-                <SendMessageInput setMessages={setMessages} />
-            </>
+            {
+                selectedContact
+                    ? <>
+                        <ChatSection messages={messages} />
+                        <SendMessageInput setMessages={setMessages} />
+                    </>
+                    : <Empty />
+            }
         </div>
     )
 }
