@@ -13,7 +13,7 @@ const ChatContainer = () => {
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 
     return (
-        <div className="relative rounded-xl bg-muted/50 p-4 col-span-2 max-h-[calc(100vh-90px)] overflow-hidden">
+        <div className="relative rounded-xl bg-muted/50 p-4 col-span-2 min-h-[calc(100vh-90px)] max-h-[calc(100vh-90px)] overflow-hidden">
             {
                 selectedContact
                     ? <>
