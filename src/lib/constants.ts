@@ -5,3 +5,5 @@ export const tabs = {
   SETTINGS: "Settings",
   PROFILE: "Profile",
 } as const;
+
+export type TabType = (typeof tabs)[keyof typeof tabs];
