@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+"use client"
 import {
     CornerDownLeft,
     Mic,
@@ -10,11 +12,50 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import socket from "@/lib/client-socket"
+import { IMessages } from "@/lib/constants"
+import { useEffect, useRef } from "react"
 
-const SendMessageInput = () => {
+const SendMessageInput = ({ setMessages }: { setMessages: React.Dispatch<React.SetStateAction<IMessages[]>> }) => {
+
+    const messageRef = useRef<HTMLTextAreaElement>(null)
+
+    const handleSubmit = () => {
+        const msgValue = messageRef.current?.value
+        if (msgValue) {
+            socket.emit('message:client', {
+                isMe: true,
+                message: msgValue
+            })
+
+            messageRef.current.value = ''
+        }
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // Prevent newline
+            handleSubmit();
+        }
+    };
+
+    useEffect(() => {
+        const handleServerMessage = (serverMessage: IMessages) => {
+            setMessages((prev) => [...prev, serverMessage]);
+        };
+
+        socket.on('message:server', handleServerMessage);
+
+        // Clean up the event listener on component unmount or re-render
+        return () => {
+            socket.off('message:server', handleServerMessage);
+        };
+    }, [setMessages]);
+
     return (
         <div className="relative rounded-lg border bg-background mt-2">
-            <Textarea
+            <Textarea ref={messageRef}
+                onKeyDown={handleKeyDown}
                 placeholder="Type your message here..."
                 className="resize-none border-none p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
             />
@@ -43,7 +84,7 @@ const SendMessageInput = () => {
                         <TooltipContent side="top">Use Microphone</TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
-                <Button type="submit" size="sm" className="ml-auto gap-1.5">
+                <Button onClick={handleSubmit} type="submit" size="sm" className="ml-auto gap-1.5">
                     Send
                     <Send className="size-3.5" />
                 </Button>
