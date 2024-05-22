@@ -33,11 +33,10 @@ type PropType = {
 
 const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const [chatId, setChatId] = useState<string | null>(null)
     const chatEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const user = useSelector((state: RootState) => state.user.user);
-    const chats = useSelector((state: RootState) => state.chat?.chats)
-    const dispatch = useDispatch()
 
     const selectedContactId = selectedContact?._id
 
@@ -48,29 +47,25 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
     });
 
     useEffect(() => {
-        if (serverMessages?.data) {
+        if (serverMessages?.data && serverMessages.data?.length > 0) {
+            const serverChatId = serverMessages.data[0].chatId;
+            setChatId(serverChatId)
             setMessages((prev) => ({
                 ...prev,
-                [selectedContactId]: serverMessages?.data,
+                [serverChatId]: serverMessages?.data,
             }));
-
-            // check if the chat already present in chats if yes then delete that add th
 
         }
     }, [serverMessages?.data]);
 
     useEffect(() => {
         const handleServerMessage = (serverMessage: ServerMessage) => {
-            const selectedContactUserId = serverMessage?.selectedContactUser.contact._id
+            const socketMessageChatId = serverMessage?.message.chatId
+            setChatId(socketMessageChatId)
             setMessages((prev) => ({
                 ...prev,
-                [selectedContactUserId]: [...(prev[selectedContactUserId] || []), serverMessage.message],
+                [socketMessageChatId]: [...(prev[socketMessageChatId] || []), serverMessage.message],
             }));
-
-            const newSingleChat = serverMessage.selectedContactUser
-            const filteredChats = chats?.filter(chat => chat._id !== newSingleChat?._id)
-            dispatch(setChats([newSingleChat, ...filteredChats]))
-
         };
 
         socket.on('message:server', handleServerMessage);
@@ -78,18 +73,20 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
         return () => {
             socket.off('message:server', handleServerMessage);
         };
-    }, [setMessages]);
+    }, [user, socket]);
 
     useEffect(() => {
         scrollToBottomInstantly(chatContainerRef);
     }, [messages, selectedContactId]);
 
     const memoizedMessages = useMemo(() => {
-        const chatMessages = messages[selectedContactId] || [];
-        return chatMessages.map((message) => (
-            <ChatBubble key={message._id} isMe={user === message.author._id} message={message} />
-        ));
-    }, [messages, selectedContactId]);
+        if (chatId) {
+            const chatMessages = messages[chatId] || [];
+            return chatMessages.map((message) => (
+                <ChatBubble key={message._id} isMe={user === message.author._id} message={message} />
+            ));
+        }
+    }, [messages, chatId]);
 
     return (
         <div className='relative h-[75%]'>
