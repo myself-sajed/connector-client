@@ -11,7 +11,7 @@ import { Message } from "@/lib/types"
 
 const ChatContainer = () => {
 
-    const [messages, setMessages] = useState<Message[]>([])
+    const [messages, setMessages] = useState({})
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 
 
