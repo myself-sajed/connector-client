@@ -7,12 +7,16 @@ import ChatContactCard from "../unit/ChatContactCard"
 import { Badge } from "@/components/ui/badge"
 import Loading from "@/components/ui/loading"
 import { Contact } from "@/lib/types"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 const UserContactBar = () => {
 
+    const user = useSelector((state: RootState) => state.user?.user) || null
     const { data: contact, isLoading, isError } = useQuery({
         queryKey: ['contact-list'],
-        queryFn: () => getUsers()
+        queryFn: () => getUsers(user),
+        enabled: !!user
     })
 
     return (
