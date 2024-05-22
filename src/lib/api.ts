@@ -8,4 +8,6 @@ const api = axios.create({
 
 // api requests
 export const getUsers = () => api.get("/api/users/");
-export const getChats = (meId: string) => api.get(`/api/chats/${meId}`);
+export const getChats = (meId: string | null) => api.get(`/api/chats/${meId}`);
+export const getMessages = (chatId: string | null, meId: string | null) =>
+  api.get(`/api/messages/${chatId}/${meId}`);
