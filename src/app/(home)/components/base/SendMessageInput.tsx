@@ -29,7 +29,8 @@ const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React
         const chatData = {
             userIds: [userId, selectedContact._id],
             messageContent: msgValue,
-            author: userId
+            author: userId,
+            selectedContactId: selectedContact._id
         }
 
         if (msgValue) {
@@ -45,22 +46,6 @@ const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React
         }
     };
 
-    useEffect(() => {
-        const handleServerMessage = (serverMessage: Message) => {
-            console.log(serverMessage,)
-            setMessages((prev) => {
-                console.log(prev[0])
-                return [...prev, serverMessage]
-            });
-        };
-
-        socket.on('message:server', handleServerMessage);
-
-        // Clean up the event listener on component unmount or re-render
-        return () => {
-            socket.off('message:server', handleServerMessage);
-        };
-    }, [setMessages]);
 
     return (
         <div className="relative rounded-lg border bg-background mt-2">
