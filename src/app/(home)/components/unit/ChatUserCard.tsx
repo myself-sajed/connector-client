@@ -5,17 +5,18 @@ import { setContact } from '@/redux/slices/activeSlice'
 import { useDispatch } from 'react-redux'
 
 type PropType = {
-    chat: Chat
+    chat: Chat;
+    isMe: boolean;
 }
 
-const ChatUserCard = ({ chat }: PropType) => {
+const ChatUserCard = ({ chat, isMe }: PropType) => {
 
     const contact = chat.contact
     const dispatch = useDispatch()
 
 
     const handleContactSelect = () => {
-        dispatch(setContact(contact))
+        dispatch(setContact({ ...contact, chatId: chat._id }))
     }
 
 
@@ -36,9 +37,9 @@ const ChatUserCard = ({ chat }: PropType) => {
                     </p>
                 </div>
             </div>
-            <div className="ml-auto font-medium">
+            {/* <div className="ml-auto font-medium">
                 <Badge>+{2}</Badge>
-            </div>
+            </div> */}
         </div>
     )
 }
