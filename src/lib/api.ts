@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 // api requests
-export const getUsers = () => api.get("/api/users/");
+export const getUsers = (user: string | null) => api.get(`/api/users/${user}`);
 export const getChats = (meId: string | null) => api.get(`/api/chats/${meId}`);
-export const getMessages = (chatId: string | null, meId: string | null) =>
-  api.get(`/api/messages/${chatId}/${meId}`);
+export const getMessages = (contactId: string | null, meId: string | null) =>
+  api.get(`/api/messages/${contactId}/${meId}`);
