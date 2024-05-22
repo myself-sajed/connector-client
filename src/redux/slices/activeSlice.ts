@@ -3,9 +3,13 @@ import { Contact } from "@/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+export interface SelectedChatUser extends Contact {
+  chatId: string;
+}
+
 export interface ActiveState {
   currentTab: string;
-  selectedContact: Contact | null;
+  selectedContact: SelectedChatUser | null;
 }
 
 const initialState: ActiveState = {
@@ -21,7 +25,7 @@ export const counterSlice = createSlice({
       state.currentTab = action.payload;
     },
 
-    setContact: (state, action: PayloadAction<Contact>) => {
+    setContact: (state, action: PayloadAction<SelectedChatUser>) => {
       state.selectedContact = action.payload;
     },
   },
