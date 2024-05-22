@@ -16,7 +16,7 @@ const ChatContactCard = ({ contact }: PropType) => {
     const dispatch = useDispatch()
 
     const handleContactSelect = () => {
-        dispatch(setContact(contact))
+        dispatch(setContact({ ...contact, chatId: contact._id }))
         dispatch(setCurrentTab(tabs.CHATS))
     }
 
