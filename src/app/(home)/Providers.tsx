@@ -7,12 +7,17 @@ import {
 } from '@tanstack/react-query'
 
 import React from 'react'
+import { usePathname } from 'next/navigation'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
+
+    const pathname = usePathname()
+
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
-                staleTime: 100000
+                staleTime: 100000,
+                enabled: pathname === '/'
             }
         }
     })
