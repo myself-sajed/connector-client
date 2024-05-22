@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import activeSlice from "./slices/activeSlice";
+import loggedInUserSlice from "./slices/loggedInUserSlice";
 
 export const store = configureStore({
   reducer: {
     active: activeSlice,
+    user: loggedInUserSlice,
   },
 });
 
