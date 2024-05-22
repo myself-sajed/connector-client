@@ -1,3 +1,5 @@
+"use client"
+
 import Sidebar from "./components/base/Sidebar"
 import UserChatBar from "./components/base/UserChatBar"
 import ChatContainer from "./components/base/ChatContainer"
