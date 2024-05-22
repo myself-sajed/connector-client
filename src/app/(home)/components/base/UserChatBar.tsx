@@ -6,16 +6,14 @@ import { Badge } from "@/components/ui/badge"
 import Loading from "@/components/ui/loading"
 import { Chat } from "@/lib/types"
 import ChatUserCard from "../unit/ChatUserCard"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import socket from "@/lib/client-socket"
-import { setChats } from "@/redux/slices/chatSlice"
 
 const UserChatBar = () => {
     const userId = useSelector((state: RootState) => state.user?.user) || null
-    const chats = useSelector((state: RootState) => state.chat?.chats)
-    const dispatch = useDispatch()
+    const [chats, setChats] = useState<Chat[]>([])
 
     useEffect(() => {
         if (userId) {
@@ -51,9 +49,28 @@ const UserChatBar = () => {
 
     useEffect(() => {
         if (serverChats?.data) {
-            dispatch(setChats(serverChats?.data))
+            setChats(serverChats?.data)
         }
     }, [serverChats?.data])
+
+
+    useEffect(() => {
+        const handleServerChat = (chat: Chat) => {
+
+            console.log(userId, chat)
+
+            setChats((prevChats) => {
+                const filteredPrevChats = prevChats.filter((itemChat) => itemChat._id !== chat._id)
+                return [chat, ...filteredPrevChats]
+            })
+        };
+
+        socket.on('chat:server', handleServerChat);
+
+        return () => {
+            socket.off('chat:server', handleServerChat);
+        };
+    }, [userId, socket]);
 
 
     return (
