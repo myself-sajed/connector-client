@@ -2,7 +2,13 @@ import "../globals.css"
 import "../features.css"
 import { Inter as FontSans } from "next/font/google"
 
+export const metadata = {
+  title: 'Connector',
+  description: 'Welcome to Connector',
+}
+
 import { cn } from "@/lib/utils"
+import Providers from "./Providers"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -12,9 +18,6 @@ const fontSans = FontSans({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Connector | Sajed</title>
-      </head>
       <body
         className={cn(
           "bg-background font-sans antialiased",
@@ -22,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       >
         <div id="root">
-          {children}
+          <Providers>
+            {children}
+          </Providers>
         </div>
       </body>
     </html>
