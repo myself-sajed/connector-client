@@ -13,22 +13,23 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import socket from "@/lib/client-socket"
-import { Contact, IMessages } from "@/lib/types"
+import { Contact, Message } from "@/lib/types"
 import { useEffect, useRef } from "react"
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
 
-const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React.Dispatch<React.SetStateAction<IMessages[]>>, selectedContact: Contact }) => {
+const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React.Dispatch<React.SetStateAction<Message[]>>, selectedContact: Contact }) => {
 
     const messageRef = useRef<HTMLTextAreaElement>(null)
+    const userId = useSelector((state: RootState) => state.user?.user)
 
     const handleSubmit = () => {
         const msgValue = messageRef.current?.value
 
         const chatData = {
-            userIds: ["664c2e25c4333a7cf53a1214", selectedContact._id],
+            userIds: [userId, selectedContact._id],
             messageContent: msgValue,
-            author: "664c2e25c4333a7cf53a1214"
+            author: userId
         }
 
         if (msgValue) {
@@ -45,8 +46,12 @@ const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React
     };
 
     useEffect(() => {
-        const handleServerMessage = (serverMessage: IMessages) => {
-            setMessages((prev) => [...prev, serverMessage]);
+        const handleServerMessage = (serverMessage: Message) => {
+            console.log(serverMessage,)
+            setMessages((prev) => {
+                console.log(prev[0])
+                return [...prev, serverMessage]
+            });
         };
 
         socket.on('message:server', handleServerMessage);
