@@ -47,6 +47,10 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
     });
 
     useEffect(() => {
+        setChatId(null)
+    }, [selectedContactId])
+
+    useEffect(() => {
         if (serverMessages?.data && serverMessages.data?.length > 0) {
             const serverChatId = serverMessages.data[0].chatId;
             setChatId(serverChatId)
@@ -80,13 +84,11 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
     }, [messages, selectedContactId]);
 
     const memoizedMessages = useMemo(() => {
-        if (chatId) {
-            const chatMessages = messages[chatId] || [];
-            return chatMessages.map((message) => (
-                <ChatBubble key={message._id} isMe={user === message.author._id} message={message} />
-            ));
-        }
-    }, [messages, chatId]);
+        const chatMessages = chatId ? messages[chatId] : [];
+        return chatMessages.map((message) => (
+            <ChatBubble key={message._id} isMe={user === message.author._id} message={message} />
+        ));
+    }, [messages, chatId, selectedContactId]);
 
     return (
         <div className='relative h-[75%]'>
