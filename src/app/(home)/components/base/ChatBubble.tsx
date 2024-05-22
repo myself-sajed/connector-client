@@ -1,6 +1,8 @@
+import { Message } from "@/lib/types";
 import { ChevronDown } from "lucide-react";
+import generateMessageTime from "../../helpers/generateMessageTime";
 
-function ChatBubble({ message, isMe }: { message: string, isMe?: boolean }) {
+function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
     return (
         <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
             <div
@@ -20,13 +22,9 @@ function ChatBubble({ message, isMe }: { message: string, isMe?: boolean }) {
 
 
 
-
-
-
-
                 {/* MESSAGE */}
-                <p className="mr-10">{message}</p>
-                <time className='flex items-center justify-end text-[10px]'>11:24 pm</time>
+                <p className="mr-10">{message.text}</p>
+                <time className='flex items-center justify-end text-[10px]'>{generateMessageTime(message.updatedAt)}</time>
             </div>
         </div>
 
