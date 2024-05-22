@@ -6,17 +6,16 @@ import { useDispatch } from 'react-redux'
 
 type PropType = {
     chat: Chat;
-    isMe: boolean;
 }
 
-const ChatUserCard = ({ chat, isMe }: PropType) => {
+const ChatUserCard = ({ chat }: PropType) => {
 
     const contact = chat.contact
     const dispatch = useDispatch()
 
 
     const handleContactSelect = () => {
-        dispatch(setContact({ ...contact, chatId: chat._id }))
+        dispatch(setContact(contact))
     }
 
 
@@ -33,7 +32,7 @@ const ChatUserCard = ({ chat, isMe }: PropType) => {
                         {contact.name}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                        {chat.lastMessage.text}
+                        {chat.lastMessage?.text}
                     </p>
                 </div>
             </div>
