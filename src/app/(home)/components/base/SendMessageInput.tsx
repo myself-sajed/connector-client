@@ -23,6 +23,10 @@ const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React
     const messageRef = useRef<HTMLTextAreaElement>(null)
     const userId = useSelector((state: RootState) => state.user?.user)
 
+    useEffect(() => {
+        messageRef.current?.focus()
+    }, [userId])
+
     const handleSubmit = () => {
         const msgValue = messageRef.current?.value
 
@@ -51,6 +55,7 @@ const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React
         <div className="relative rounded-lg border bg-background mt-2">
             <Textarea ref={messageRef}
                 onKeyDown={handleKeyDown}
+                autoFocus={true}
                 placeholder="Type your message here..."
                 className="resize-none border-none p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
             />
