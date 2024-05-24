@@ -1,0 +1,27 @@
+/* For Webkit-based browsers */
+::-webkit-scrollbar {
+    width: 14px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: white;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 10px;
+    margin-inline: 5px;
+    border: 3px solid #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: white;
+  }
+  
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #b3b3b3 white;
+    scroll-margin-inline: 5px;
+  }
+  
