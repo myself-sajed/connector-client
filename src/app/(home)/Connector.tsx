@@ -27,9 +27,19 @@ export default function Connector() {
       <Sidebar />
       <div className="flex flex-col h-full">
         <Header />
-        <main className="grid flex-1 gap-4 md:p-4 p-2 md:grid-cols-3 h-full">
-          {tabMap?.[currentTab]}
-          <ChatContainer />
+        <main className="grid flex-1 gap-4 md:p-3 p-2 md:grid-cols-3 h-full">
+
+          {/* SHOWING COMPONENTS NORMALLY UNTIL REACHES BELOW md */}
+          <div className="hidden md:block">{tabMap?.[currentTab]}</div>
+          <ChatContainer className={"hidden md:block"} />
+
+          {/* SHOWING COMPONENTS BASED ON PRIORITY WHEN SCREEN IS BELOW md. IF CONTACT IS SELECTED THEN SHOW CHAT CONTAINER 
+          OTHERWISE SHOW THE CURRENTLY SELECTED TAB */}
+          {
+            selectedContact
+              ? <ChatContainer className="block md:hidden " />
+              : <div className="block md:hidden">{tabMap?.[currentTab]}</div>
+          }
         </main>
       </div>
     </div>

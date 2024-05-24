@@ -34,7 +34,7 @@ const UserContactBar = () => {
     }
 
     return (
-        <div className="relative hidden flex-col items-start gap-2 md:flex">
+        <div className="relative flex-col items-start gap-2 flex">
             <SearchBar tooltipText="Refresh Contacts" isLoading={isLoading} isFetching={isFetching} refetch={refetch} onSearch={onSearch} />
             {
                 isError

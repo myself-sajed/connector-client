@@ -25,7 +25,7 @@ const ChatContactCard = ({ contact, isSelected }: PropType) => {
     return (
         <div className={cn("flex items-start justify-between px-2 py-4 cursor-pointer hover:bg-muted  transition duration-200 w-full", isSelected ? "bg-muted" : "")} onClick={handleContactSelect}>
             <div className="flex items-start gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
+                <Avatar className="h-9 w-9">
                     <AvatarImage src={contact.avatar} alt="Avatar" />
                     <AvatarFallback>{contact.name}</AvatarFallback>
                 </Avatar>
