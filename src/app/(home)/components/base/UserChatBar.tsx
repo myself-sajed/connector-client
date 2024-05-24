@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import socket from "@/lib/client-socket"
 import EmptyBar from "../unit/EmptyBar"
 import { tabs } from "@/lib/constants"
+import SearchBar from "../unit/SearchBar"
 
 const UserChatBar = () => {
     const userId = useSelector((state: RootState) => state.user?.user) || null
@@ -45,7 +46,7 @@ const UserChatBar = () => {
     };
 
 
-    const { data: serverChats, isLoading, isError } = useQuery({
+    const { data: serverChats, isLoading, isError, isFetching, refetch } = useQuery({
         queryKey: ['chat-list'],
         queryFn: () => getChats(userId)
     })
@@ -73,9 +74,14 @@ const UserChatBar = () => {
     }, [userId, socket]);
 
 
+    const onSearch = () => {
+
+    }
+
+
     return (
         <div className="relative hidden flex-col items-start gap-2 md:flex">
-            <Input type="search" placeholder="Search contact" className="sticky left-0 top-0" />
+            <SearchBar tooltipText="Refresh Chats" isLoading={isLoading} isFetching={isFetching} refetch={refetch} onSearch={onSearch} />
             {
                 isError
                     ? <Badge variant="destructive" className="my-10">
@@ -83,7 +89,7 @@ const UserChatBar = () => {
                     </Badge>
                     : isLoading
                         ? <Loading title="Fetching Chats..." />
-                        : chats?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)] pr-5">
+                        : chats?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)]">
                             {
                                 chats?.map((chat: Chat) => {
                                     return <ChatUserCard key={chat._id} chat={chat} isSelected={chat.contact._id === selectedContact?._id} />
