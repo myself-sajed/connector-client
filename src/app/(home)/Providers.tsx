@@ -16,7 +16,6 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
-                staleTime: 100000,
                 enabled: pathname === '/'
             }
         }
