@@ -11,21 +11,31 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import EmptyBar from "../unit/EmptyBar"
 import { tabs } from "@/lib/constants"
+import { RotateCw } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import SearchBar from "../unit/SearchBar"
 
 const UserContactBar = () => {
 
     const user = useSelector((state: RootState) => state.user?.user) || null
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 
-    const { data: contact, isLoading, isError } = useQuery({
+    const { data: contact, isLoading, isError, isFetching, refetch } = useQuery({
         queryKey: ['contact-list'],
         queryFn: () => getUsers(user),
-        enabled: !!user
+        enabled: !!user,
+        staleTime: 100000
     })
+
+    const onSearch = () => {
+
+    }
 
     return (
         <div className="relative hidden flex-col items-start gap-2 md:flex">
-            <Input type="search" placeholder="Search contact" className="sticky left-0 top-0" />
+            <SearchBar tooltipText="Refresh Contacts" isLoading={isLoading} isFetching={isFetching} refetch={refetch} onSearch={onSearch} />
             {
                 isError
                     ? <Badge variant="destructive" className="my-10">
