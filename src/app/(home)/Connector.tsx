@@ -12,6 +12,7 @@ import UserContactBar from "./components/base/UserContactBar"
 export default function Connector() {
 
   const currentTab = useSelector((state: RootState) => state.active?.currentTab) as TabType
+  const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 
   const tabMap = {
     Chats: <UserChatBar />,
@@ -26,7 +27,7 @@ export default function Connector() {
       <Sidebar />
       <div className="flex flex-col h-full">
         <Header />
-        <main className="grid flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 h-full">
+        <main className="grid flex-1 gap-4 md:p-4 p-2 md:grid-cols-3 h-full">
           {tabMap?.[currentTab]}
           <ChatContainer />
         </main>
