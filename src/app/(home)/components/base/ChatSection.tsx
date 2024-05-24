@@ -65,7 +65,9 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
     useEffect(() => {
         const handleServerMessage = (serverMessage: ServerMessage) => {
             const socketMessageChatId = serverMessage?.message.chatId
-            setChatId(socketMessageChatId)
+            if (!chatId) {
+                setChatId(socketMessageChatId)
+            }
             setMessages((prev) => ({
                 ...prev,
                 [socketMessageChatId]: [...(prev[socketMessageChatId] || []), serverMessage.message],
@@ -92,7 +94,7 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
 
     return (
         <div className='relative h-[75%]'>
-            <div className='h-full overflow-hidden overflow-y-auto px-[3.5rem]' onScroll={() => handleScroll(chatContainerRef, setShowScrollButton)} ref={chatContainerRef}>
+            <div className='h-full overflow-hidden overflow-y-auto md:px-[3.5rem] pr-1' onScroll={() => handleScroll(chatContainerRef, setShowScrollButton)} ref={chatContainerRef}>
                 {isError ? (
                     <Badge className="flex items-center justify-center w-full my-10">
                         Error fetching messages...
@@ -104,7 +106,7 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
                 )}
                 <div ref={chatEndRef} />
                 {showScrollButton && (
-                    <ChevronDown onClick={() => scrollToBottom(chatEndRef)} className='text-muted-foreground absolute bottom-5 z-30 rounded-full right-6 drop-shadow-md cursor-pointer bg-white hover:bg-gray-100 shadow-md p-2' size={40} strokeWidth={2} />
+                    <ChevronDown onClick={() => scrollToBottom(chatEndRef)} className='text-muted-foreground absolute bottom-5 z-30 rounded-full right-4 drop-shadow-md cursor-pointer bg-white hover:bg-gray-100 shadow-md p-2' size={40} strokeWidth={2} />
                 )}
             </div>
         </div>
