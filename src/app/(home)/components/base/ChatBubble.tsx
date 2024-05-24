@@ -7,7 +7,7 @@ function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
         <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
             <div
                 className={`max-w-xs rounded-lg px-4 py-2 transition duration-200 group
-                        ${isMe ? 'bg-primary text-right text-white'
+                        ${isMe ? 'bg-primary text-left text-white'
                         : 'bg-gray-200 text-left text-black'} relative`
                 }
                 style={{
