@@ -11,9 +11,9 @@ const Header = () => {
 
     return (
         <header className="sticky top-0 z-10 h-[57px] items-center gap-4 flex justify-between md:grid md:grid-cols-3 border-b bg-background px-4">
-            <LogoHeading className="hidden sm:block md:flex md:items-center" currentTab={currentTab} />
+            <LogoHeading className="hidden md:flex md:items-center" currentTab={currentTab} />
             <SelectedContact />
-            <LogoHeading className="block sm:hidden md:hidden" currentTab={currentTab} />
+            <LogoHeading className="block md:hidden" currentTab={currentTab} />
         </header>
     )
 }
