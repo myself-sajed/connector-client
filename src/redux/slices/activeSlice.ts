@@ -21,7 +21,7 @@ export const activeSlice = createSlice({
       state.currentTab = action.payload;
     },
 
-    setContact: (state, action: PayloadAction<Contact>) => {
+    setContact: (state, action: PayloadAction<Contact | null>) => {
       state.selectedContact = action.payload;
     },
   },
