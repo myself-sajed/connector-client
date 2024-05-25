@@ -3,24 +3,24 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface ChatState {
-  chats: Chat[];
+  storeChats: Chat[];
 }
 
 const initialState: ChatState = {
-  chats: [],
+  storeChats: [],
 };
 
 export const chatSlice = createSlice({
   name: "chats",
   initialState,
   reducers: {
-    setChats: (state, action: PayloadAction<Chat[]>) => {
-      state.chats = action.payload;
+    setStoreChats: (state, action: PayloadAction<Chat[]>) => {
+      state.storeChats = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setChats } = chatSlice.actions;
+export const { setStoreChats } = chatSlice.actions;
 
 export default chatSlice.reducer;
