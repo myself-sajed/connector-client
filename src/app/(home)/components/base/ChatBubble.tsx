@@ -22,7 +22,7 @@ function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
 
                 {/* MESSAGE OPTION BUTTON */}
 
-                <ChevronDown size={20} className={`absolute group-hover:block hidden top-2 right-2 cursor-pointer ${isMe ? 'text-muted' : 'text-muted-foreground'} transition duration-200`} />
+                <ChevronDown size={20} className={`absolute group-hover:block hidden top-2 right-2 cursor-pointer transition duration-200`} />
 
                 {/* MESSAGE */}
                 <p className="mr-10">{message.text}</p>
