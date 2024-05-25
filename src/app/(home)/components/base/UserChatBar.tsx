@@ -6,18 +6,20 @@ import { Badge } from "@/components/ui/badge"
 import Loading from "@/components/ui/loading"
 import { Chat } from "@/lib/types"
 import ChatUserCard from "../unit/ChatUserCard"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { useEffect, useState } from "react"
 import socket from "@/lib/client-socket"
 import EmptyBar from "../unit/EmptyBar"
 import { tabs } from "@/lib/constants"
 import SearchBar from "../unit/SearchBar"
+import { setStoreChats } from "@/redux/slices/chatSlice"
 
 const UserChatBar = () => {
     const userId = useSelector((state: RootState) => state.user?.user) || null
     const [chats, setChats] = useState<Chat[]>([])
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (userId) {
@@ -74,13 +76,20 @@ const UserChatBar = () => {
     }, [userId, socket]);
 
 
+
     const onSearch = () => {
 
     }
 
+    useEffect(() => {
+        if (chats) {
+            dispatch(setStoreChats(chats))
+        }
+    }, [chats])
+
 
     return (
-        <div className="relative flex-col items-start gap-2 flex">
+        <div className="relative flex-col items-start gap-2 flex h-full">
             <SearchBar tooltipText="Refresh Chats" isLoading={isLoading} isFetching={isFetching} refetch={refetch} onSearch={onSearch} />
             {
                 isError
@@ -89,7 +98,7 @@ const UserChatBar = () => {
                     </Badge>
                     : isLoading
                         ? <Loading title="Fetching Chats..." />
-                        : chats?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)]">
+                        : chats.filter((chat) => chat.chatable)?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)]">
                             {
                                 chats?.map((chat: Chat) => {
                                     return <ChatUserCard key={chat._id} chat={chat} isSelected={chat.contact._id === selectedContact?._id} />
