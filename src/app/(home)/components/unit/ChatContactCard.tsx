@@ -1,12 +1,14 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { tabs } from '@/lib/constants'
 import { Contact } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { setContact, setCurrentTab } from '@/redux/slices/activeSlice'
-import { useDispatch } from 'react-redux'
+import { setContact, setCurrentTab, setSelectedChat } from '@/redux/slices/activeSlice'
+import { RootState } from '@/redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import generateChat from '../../helpers/generateChat'
+import { useState } from 'react'
 
 interface PropType {
     contact: Contact;
@@ -16,10 +18,23 @@ interface PropType {
 const ChatContactCard = ({ contact, isSelected }: PropType) => {
 
     const dispatch = useDispatch()
+    const currentTab = useSelector((state: RootState) => state.active?.currentTab)
+    const storeChats = useSelector((state: RootState) => state.chat?.storeChats)
+    const user = useSelector((state: RootState) => state.user?.user)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleContactSelect = () => {
         dispatch(setContact(contact))
-        dispatch(setCurrentTab(tabs.CHATS))
+
+        if (storeChats && contact && user) {
+            const chat = storeChats.find(chat => chat.contact._id === contact?._id)
+            if (chat) {
+                dispatch(setSelectedChat({ ...chat, openChatSection: true, generateChatId: false }))
+            } else {
+                generateChat({ contactId: contact?._id, meId: user, setIsLoading, dispatch, setSelectedChat })
+            }
+            dispatch(setCurrentTab(tabs.CHATS))
+        }
     }
 
     return (
