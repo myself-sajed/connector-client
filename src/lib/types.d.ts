@@ -22,11 +22,10 @@ export interface Contact {
 
 export interface Chat {
   _id: string;
-  me: {
-    _id: string;
-  };
+  me: Contact;
   contact: Contact;
   lastMessage: Message;
   createdAt: string;
   updatedAt: string;
+  chatable: boolean;
 }
