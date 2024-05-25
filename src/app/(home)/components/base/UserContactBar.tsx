@@ -1,20 +1,15 @@
 "use client"
 
-import { Input } from "@/components/ui/input"
 import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "@/lib/api"
 import ChatContactCard from "../unit/ChatContactCard"
 import { Badge } from "@/components/ui/badge"
 import Loading from "@/components/ui/loading"
 import { Contact } from "@/lib/types"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import EmptyBar from "../unit/EmptyBar"
 import { tabs } from "@/lib/constants"
-import { RotateCw } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import SearchBar from "../unit/SearchBar"
 
 const UserContactBar = () => {
