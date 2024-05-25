@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Message } from "@/lib/types";
-import { ChevronDown } from "lucide-react";
+import { Check, CheckCheck, ChevronDown } from "lucide-react";
 import generateMessageTime from "../../helpers/generateMessageTime";
+import { useEffect } from "react";
+import socket from "@/lib/client-socket";
 
 function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
+
     return (
         <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
             <div
@@ -24,7 +28,18 @@ function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
 
                 {/* MESSAGE */}
                 <p className="mr-10">{message.text}</p>
-                <time className='flex items-center justify-end text-[10px]'>{generateMessageTime(message.updatedAt)}</time>
+                <p className='flex items-center justify-end text-[10px] mt-3 gap-3'>
+                    {generateMessageTime(message.updatedAt)}
+                    {isMe
+                        && <span>
+                            {message.status === "sent"
+                                ? <Check size={18} />
+                                : message.status === "delivered"
+                                    ? <CheckCheck size={18} />
+                                    : <CheckCheck size={18} className="text-blue-900" />
+                            }</span>}</p>
+
+
             </div>
         </div>
 
