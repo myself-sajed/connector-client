@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Chat } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { setContact } from '@/redux/slices/activeSlice'
+import { setContact, setSelectedChat } from '@/redux/slices/activeSlice'
 import { useDispatch } from 'react-redux'
 
 type PropType = {
@@ -17,6 +17,7 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
 
     const handleContactSelect = () => {
         dispatch(setContact(contact))
+        dispatch(setSelectedChat({ ...chat, openChatSection: true, generateChatId: false }))
     }
 
     return (
