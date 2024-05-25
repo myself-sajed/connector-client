@@ -13,7 +13,7 @@ import Loading from '@/components/ui/loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import socket from '@/lib/client-socket';
-import { setChats } from '@/redux/slices/chatSlice';
+import { SelectedChat } from '@/redux/slices/activeSlice';
 
 interface SelectedContactUser extends Chat {
     contact: Contact;
@@ -28,37 +28,35 @@ interface ServerMessage {
 type PropType = {
     setMessages: React.Dispatch<React.SetStateAction<{ [key: string]: Message[] }>>;
     messages: { [key: string]: Message[] };
-    selectedContact: Contact;
+    selectedChat: SelectedChat;
 };
 
-const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
+const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
     const [showScrollButton, setShowScrollButton] = useState(false);
-    const [chatId, setChatId] = useState<string | null>(null)
+    const [chatId, setChatId] = useState<string>(selectedChat._id!)
     const chatEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const user = useSelector((state: RootState) => state.user.user);
-
-    const selectedContactId = selectedContact?._id
+    const selectedContact = useSelector((state: RootState) => state.active.selectedContact);
 
     const { data: serverMessages, isLoading, isError } = useQuery({
-        queryKey: ['message-list', selectedContactId, user],
-        queryFn: () => getMessages(selectedContactId || null, user || null),
-        enabled: !!selectedContact && !!user,
+        queryKey: ['message-list', chatId, user],
+        queryFn: () => getMessages(chatId),
+        enabled: !!chatId,
     });
 
     useEffect(() => {
-        setChatId(null)
-    }, [selectedContactId])
+        if (selectedChat) {
+            setChatId(selectedChat?._id!)
+        }
+    }, [selectedChat])
 
     useEffect(() => {
         if (serverMessages?.data && serverMessages.data?.length > 0) {
-            const serverChatId = serverMessages.data[0].chatId;
-            setChatId(serverChatId)
             setMessages((prev) => ({
                 ...prev,
-                [serverChatId]: serverMessages?.data,
+                [chatId]: serverMessages?.data,
             }));
-
         }
     }, [serverMessages?.data]);
 
@@ -83,14 +81,14 @@ const ChatSection = ({ messages, setMessages, selectedContact }: PropType) => {
 
     useEffect(() => {
         scrollToBottomInstantly(chatContainerRef);
-    }, [messages, selectedContactId]);
+    }, [messages, chatId]);
 
     const memoizedMessages = useMemo(() => {
-        const chatMessages = chatId ? messages[chatId] : [];
+        const chatMessages = messages[chatId] || [];
         return chatMessages.map((message) => (
             <ChatBubble key={message._id} isMe={user === message.author._id} message={message} />
         ));
-    }, [messages, chatId, selectedContactId]);
+    }, [messages, chatId, selectedChat, selectedContact]);
 
     return (
         <div className='relative h-[75%]'>
