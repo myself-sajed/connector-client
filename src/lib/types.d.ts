@@ -5,7 +5,7 @@ export interface Message {
   filename: string | null;
   type: string;
   chatId: string;
-  seen: boolean;
+  status: "sent" | "delivered" | "seen";
   createdAt: string;
   updatedAt: string;
 }

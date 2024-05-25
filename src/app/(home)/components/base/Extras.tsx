@@ -68,78 +68,61 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
             if (!chatId) {
                 setChatId(socketMessageChatId)
             }
-
-            if (serverMessage.message.author._id === user) {
-                setMessages((prev) => ({
-                    ...prev,
-                    [socketMessageChatId]: (prev[socketMessageChatId] || []).map((msg: Message): Message => {
-                        return msg._id === tempMessageId ? serverMessage?.message : msg
-                    })
-                }));
-            } else {
-                setMessages((prev) => ({
-                    ...prev,
-                    [socketMessageChatId]: [...(prev[socketMessageChatId] || []), serverMessage?.message]
-                }));
-
-                if (selectedChat?._id === serverMessage?.message?.chatId) {
-                    socket.emit("client:status:delivered", { chatId, userId: user })
-                }
-            }
-
-
+            setMessages((prev) => ({
+                ...prev,
+                [socketMessageChatId]: (prev[socketMessageChatId] || []).map((msg: Message): Message => {
+                    return msg._id === tempMessageId ? serverMessage?.message : msg
+                }),
+            }));
         };
 
-        socket.on('message:server', handleServerMessage);
+        socket.on('message:server', (data) => {
+            console.log(data)
+        });
 
         return () => {
-            socket.off('message:server', handleServerMessage);
+            socket.off('message:server');
         };
     }, [user, socket]);
 
 
-    useEffect(() => {
-        socket.on('message:status:update', (data) => {
-            const { messageId, status } = data;
-            setMessages((prev: MessagesState) => {
-                const updatedMessages = { ...prev };
-                Object.keys(updatedMessages).forEach(chatId => {
-                    updatedMessages[chatId] = updatedMessages[chatId].map(msg => {
-                        if (msg._id === messageId) {
-                            return { ...msg, status: status };
-                        }
-                        return msg;
-                    });
-                });
-                return updatedMessages;
-            });
-        });
+    // useEffect(() => {
+    //     socket.on('message:status:update', (data) => {
+    //         const { messageId, status } = data;
+    //         setMessages((prev: MessagesState) => {
+    //             const updatedMessages = { ...prev };
+    //             Object.keys(updatedMessages).forEach(chatId => {
+    //                 updatedMessages[chatId] = updatedMessages[chatId].map(msg => {
+    //                     if (msg._id === messageId) {
+    //                         return { ...msg, status: status };
+    //                     }
+    //                     return msg;
+    //                 });
+    //             });
+    //             return updatedMessages;
+    //         });
+    //     });
 
-        return () => {
-            socket.off('message:status:update');
-        };
-    }, [socket]);
+    //     return () => {
+    //         socket.off('message:status:update');
+    //     };
+    // }, [socket]);
 
-    useEffect(() => {
-        socket.on("server:status:delivered", (message) => {
-            setMessages((prev: MessagesState) => {
-                return {
-                    ...prev, [message.chatId]: (prev[message.chatId] || []).map((msg) => {
-                        return msg._id === message._id ? { ...msg, status: 'seen' } : msg
-                    })
-                }
-            });
-        });
+    // useEffect(() => {
+    //     socket.on("server:status:delivered", (message) => {
+    //         setMessages((prev: MessagesState) => {
+    //             return {
+    //                 ...prev, [message.chatId]: (prev[message.chatId] || []).map((msg) => {
+    //                     return msg._id === message._id ? { ...msg, status: 'seen' } : msg
+    //                 })
+    //             }
+    //         });
+    //     });
 
-        return () => {
-            socket.off('server:status:delivered');
-        };
-    }, [socket]);
-
-
-    useEffect(() => {
-        socket.emit("client:status:delivered", { chatId, userId: user })
-    }, [socket])
+    //     return () => {
+    //         socket.off('server:status:delivered');
+    //     };
+    // }, [socket]);
 
 
     useEffect(() => {

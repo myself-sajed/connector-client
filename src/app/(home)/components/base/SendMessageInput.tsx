@@ -10,12 +10,20 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import socket from "@/lib/client-socket"
-import { useEffect, useRef } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef } from "react"
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
 import { SelectedChat } from "@/redux/slices/activeSlice"
+import { v4 as uuid } from "uuid"
+import { Message } from "@/lib/types"
+import { MessagesState } from "./ChatContainer"
 
-const SendMessageInput = ({ selectedChat }: { selectedChat: SelectedChat }) => {
+interface PropType {
+    selectedChat: SelectedChat;
+    setMessages: Dispatch<SetStateAction<{}>>;
+}
+
+const SendMessageInput = ({ selectedChat, setMessages }: PropType) => {
 
     const messageRef = useRef<HTMLTextAreaElement>(null)
     const userId = useSelector((state: RootState) => state.user?.user)
@@ -27,14 +35,38 @@ const SendMessageInput = ({ selectedChat }: { selectedChat: SelectedChat }) => {
     const handleSubmit = () => {
         const msgValue = messageRef.current?.value
 
-        const chatData = {
-            selectedChat,
-            messageContent: msgValue,
-            author: userId,
-        }
-
         if (msgValue) {
+
+            // optimistic message
+            const tempMessageId = uuid()
+
+            const optimisticMessage = {
+                _id: tempMessageId,
+                text: msgValue,
+                updatedAt: new Date().getTime(),
+                author: { _id: userId }
+            }
+
+
+            const chatData = {
+                selectedChat,
+                messageContent: msgValue,
+                author: userId,
+                tempMessageId
+            }
+
             socket.emit('message:client', chatData)
+            if (selectedChat && selectedChat._id) {
+                const chatId = selectedChat._id as string;
+                setMessages((prev: MessagesState) => {
+                    return {
+                        ...prev,
+                        [chatId]: [...(prev[chatId] || []), optimisticMessage]
+                    };
+                });
+            } else {
+                console.error("Selected chat or chat ID is null or undefined");
+            }
             messageRef.current.value = ''
         }
     }

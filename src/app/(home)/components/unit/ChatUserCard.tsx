@@ -28,7 +28,7 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
                     <AvatarFallback>{contact.name}</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">
+                    <p className="text-sm font-semibold leading-none">
                         {contact.name}
                     </p>
                     <p className="text-sm text-muted-foreground">

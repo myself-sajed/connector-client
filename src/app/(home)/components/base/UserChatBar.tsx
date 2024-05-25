@@ -100,7 +100,7 @@ const UserChatBar = () => {
                         ? <Loading title="Fetching Chats..." />
                         : chats.filter((chat) => chat.chatable)?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)]">
                             {
-                                chats?.map((chat: Chat) => {
+                                chats.filter((chat) => chat.chatable)?.map((chat: Chat) => {
                                     return <ChatUserCard key={chat._id} chat={chat} isSelected={chat.contact._id === selectedContact?._id} />
                                 })
                             }

@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const generateMessageTime = (time: string): string => {
+const generateMessageTime = (time: string | number): string => {
   return moment(time).format("hh:mm a");
 };
 
