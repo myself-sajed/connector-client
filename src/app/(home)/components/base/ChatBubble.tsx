@@ -4,27 +4,25 @@ import { Check, CheckCheck, ChevronDown } from "lucide-react";
 import generateMessageTime from "../../helpers/generateMessageTime";
 import { useEffect } from "react";
 import socket from "@/lib/client-socket";
+import { Card, CardContent } from "@/components/ui/card";
 
 function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
 
     return (
         <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
             <div
-                className={`max-w-xs rounded-lg px-4 py-2 transition duration-200 group
-                        ${isMe ? 'bg-primary text-left text-white'
-                        : 'bg-gray-200 text-left text-black'} relative`
+                className={`max-w-xs rounded-lg px-4 py-2 transition duration-200 group 
+                        ${isMe ? 'bg-secondary-foreground text-left text-blue-900 border'
+                        : 'bg-gray-200 border-2 text-left text-black'} relative`
                 }
                 style={{
                     borderBottomLeftRadius: isMe ? '16px' : '0',
                     borderBottomRightRadius: isMe ? '0' : '16px',
                 }}>
 
-
                 {/* MESSAGE OPTION BUTTON */}
 
                 <ChevronDown size={20} className={`absolute group-hover:block hidden top-2 right-2 cursor-pointer ${isMe ? 'text-muted' : 'text-muted-foreground'} transition duration-200`} />
-
-
 
                 {/* MESSAGE */}
                 <p className="mr-10">{message.text}</p>
@@ -35,9 +33,12 @@ function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
                             {message.status === "sent"
                                 ? <Check size={18} />
                                 : message.status === "delivered"
-                                    ? <CheckCheck size={18} />
+                                    ? <CheckCheck size={18} className="text-muted-foreground" />
                                     : <CheckCheck size={18} className="text-blue-900" />
-                            }</span>}</p>
+                            }
+                        </span>
+                    }
+                </p>
 
 
             </div>
