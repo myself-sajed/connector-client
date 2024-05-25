@@ -1,24 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import {
-    CornerDownLeft,
     Mic,
     Paperclip,
     Send,
 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import socket from "@/lib/client-socket"
-import { Contact, Message } from "@/lib/types"
 import { useEffect, useRef } from "react"
 import { RootState } from "@/redux/store"
 import { useSelector } from "react-redux"
+import { SelectedChat } from "@/redux/slices/activeSlice"
 
-const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React.Dispatch<React.SetStateAction<Message[]>>, selectedContact: Contact }) => {
+const SendMessageInput = ({ selectedChat }: { selectedChat: SelectedChat }) => {
 
     const messageRef = useRef<HTMLTextAreaElement>(null)
     const userId = useSelector((state: RootState) => state.user?.user)
@@ -31,10 +28,9 @@ const SendMessageInput = ({ setMessages, selectedContact }: { setMessages: React
         const msgValue = messageRef.current?.value
 
         const chatData = {
-            userIds: [userId, selectedContact._id],
+            selectedChat,
             messageContent: msgValue,
             author: userId,
-            selectedContactId: selectedContact._id
         }
 
         if (msgValue) {
