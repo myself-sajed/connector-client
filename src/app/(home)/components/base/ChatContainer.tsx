@@ -8,11 +8,16 @@ import { RootState } from "@/redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { cn } from "@/lib/utils"
 import Loading from "@/components/ui/loading"
+import { Message } from "@/lib/types"
+
+export type MessagesState = {
+    [key: string]: Message[];
+};
 
 
 const ChatContainer = ({ className }: { className?: string }) => {
 
-    const [messages, setMessages] = useState({})
+    const [messages, setMessages] = useState<MessagesState>({})
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
     const selectedChat = useSelector((state: RootState) => state.active?.selectedChat)
 
@@ -23,7 +28,7 @@ const ChatContainer = ({ className }: { className?: string }) => {
                 (selectedContact && selectedChat && !selectedChat.generateChatId && selectedChat.openChatSection)
                     ? <>
                         <ChatSection messages={messages} setMessages={setMessages} selectedChat={selectedChat} />
-                        <SendMessageInput selectedChat={selectedChat} />
+                        <SendMessageInput setMessages={setMessages} selectedChat={selectedChat} />
                     </>
                     : selectedChat && selectedChat.generateChatId && selectedChat.openChatSection
                         ? <div>
