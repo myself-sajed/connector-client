@@ -28,4 +28,11 @@ export interface Chat {
   createdAt: string;
   updatedAt: string;
   chatable: boolean;
+  unreadCount?: {
+    [key: string]: number;
+  };
+}
+
+export interface UnreadCount {
+  [key: string]: number;
 }
