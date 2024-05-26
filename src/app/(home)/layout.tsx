@@ -1,6 +1,6 @@
 import "../globals.css"
 import "../features.css"
-import { Inter as FontSans } from "next/font/google"
+import { Sora as FontSans } from "next/font/google"
 
 export const metadata = {
   title: 'Connector',
