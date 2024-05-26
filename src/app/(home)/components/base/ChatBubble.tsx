@@ -12,7 +12,7 @@ function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
         <div className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
             <div
                 className={`max-w-xs rounded-lg px-4 py-2 transition duration-200 group 
-                        ${isMe ? 'bg-secondary-foreground text-left text-blue-900 border'
+                        ${isMe ? 'bg-primary text-left text-white border'
                         : 'bg-gray-200 border-2 text-left text-black'} relative`
                 }
                 style={{
@@ -33,7 +33,7 @@ function ChatBubble({ message, isMe }: { message: Message, isMe?: boolean }) {
                             {message.status === "sent"
                                 ? <Check size={18} />
                                 : message.status === "delivered"
-                                    ? <CheckCheck size={18} className="text-muted-foreground" />
+                                    ? <CheckCheck size={18} />
                                     : <CheckCheck size={18} className="text-blue-900" />
                             }
                         </span>
