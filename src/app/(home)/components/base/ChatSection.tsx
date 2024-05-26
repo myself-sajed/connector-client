@@ -44,6 +44,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
         queryKey: ['message-list', chatId, user],
         queryFn: () => getMessages(chatId),
         enabled: !!chatId,
+        refetchOnWindowFocus: false
     });
 
     useEffect(() => {
@@ -83,7 +84,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
                 }));
 
                 if (selectedChat?._id === serverMessage?.message?.chatId) {
-                    socket.emit("client:status:delivered", { chatId, userId: user })
+                    socket.emit("client:status:delivered", { chatId, userId: user, contactId: selectedChat?.contact?._id })
                 }
             }
 
@@ -139,17 +140,12 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
 
     useEffect(() => {
         socket.emit("client:status:delivered", { chatId, userId: user })
-    }, [socket])
+    }, [])
 
 
     useEffect(() => {
         scrollToBottomInstantly(chatContainerRef);
     }, [messages, chatId]);
-
-
-    // useEffect(() => {
-    //     socket.emit("client:status:delivered", { chatId, userId: user })
-    // }, [socket])
 
     const memoizedMessages = useMemo(() => {
         const chatMessages = messages[chatId] || [];
