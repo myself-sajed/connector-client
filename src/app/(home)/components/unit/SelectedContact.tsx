@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Contact } from "@/lib/types"
 import { cn } from "@/lib/utils"
-import { setContact } from "@/redux/slices/activeSlice"
+import { setContact, setSelectedChat } from "@/redux/slices/activeSlice"
 import { RootState } from "@/redux/store"
 import { ArrowLeft } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
@@ -16,6 +16,7 @@ const SelectedContact = ({ className }: { className?: string }) => {
 
         if (window.matchMedia('(max-width: 767px)').matches) {
             dispatch(setContact(null))
+            dispatch(setSelectedChat(null))
         }
 
     }
