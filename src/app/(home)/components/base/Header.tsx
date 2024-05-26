@@ -22,7 +22,7 @@ const Header = () => {
             <LogoHeading className="hidden md:flex md:items-center" currentTab={currentTab} />
             <div className="w-full flex items-center justify-between col-span-2">
                 <SelectedContact />
-                {selectedChat && <Button onClick={closeChat} variant="secondary" className="hidden items-center gap-2 md:flex"><MessageCircleX size={17} /><span>Close Chat</span></Button>}
+                {selectedChat && <Button onClick={closeChat} variant="secondary" className="hidden items-center gap-2 md:flex text-black"><MessageCircleX size={17} /><span>Close Chat</span></Button>}
             </div>
             <LogoHeading className="block md:hidden" currentTab={currentTab} />
         </header>
