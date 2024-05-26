@@ -6,6 +6,9 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 export interface SelectedChat {
   _id?: string | null;
   me?: Contact;
+  unreadCount?: {
+    [key: string]: number;
+  };
   contact?: Contact;
   lastMessage?: Message | null;
   createdAt?: String | null;
