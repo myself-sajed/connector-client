@@ -36,9 +36,12 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
                     </p>
                 </div>
             </div>
-            <div className="ml-auto font-medium">
-                <Badge>+{2}</Badge>
-            </div>
+            {
+                (chat.unreadCount?.[chat.contact._id] && chat.unreadCount?.[chat.contact._id] > 0)
+                    ? <div className="ml-auto font-medium">
+                        <Badge>{chat.unreadCount?.[chat.contact._id]}</Badge>
+                    </div> : ''
+            }
         </div>
     )
 }
