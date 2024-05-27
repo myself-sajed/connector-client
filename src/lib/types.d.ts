@@ -2,11 +2,13 @@ export interface Message {
   _id: string;
   author: Contact;
   text: string | null;
-  filename: string | null;
+  filename?: string | null;
   type: string;
   chatId: string;
-  status: "sent" | "delivered" | "seen";
-  createdAt: string;
+  status?: "optimistic" | "sent" | "delivered" | "seen";
+  showChevron?: boolean;
+  isEdited: boolean;
+  createdAt?: string;
   updatedAt: string;
 }
 
