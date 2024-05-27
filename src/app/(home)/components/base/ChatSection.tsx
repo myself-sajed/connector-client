@@ -1,31 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import ChatBubble from './ChatBubble';
 import { ChevronDown } from 'lucide-react';
-import { Chat, Contact, Message } from '@/lib/types';
-import { handleScroll, scrollToBottom, scrollToBottomInstantly } from '../../helpers/chatSectionHelpers';
-import { getMessages } from '@/lib/api';
-import { useQuery } from '@tanstack/react-query';
+import { Message } from '@/lib/types';
+import { handleScroll, scrollToBottom } from '../../helpers/chatSectionHelpers';
 import { Badge } from '@/components/ui/badge';
 import Loading from '@/components/ui/loading';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import socket from '@/lib/client-socket';
 import { SelectedChat } from '@/redux/slices/activeSlice';
 import { MessagesState } from './ChatContainer';
-import EditMessageDialog from './EditMessageDialog';
+import EditReplyMessageDialog from './EditMessageDialog';
+import useChatSectionHook from '../../js/useChatSectionHook';
 
-interface SelectedContactUser extends Chat {
-    contact: Contact;
-}
 
-interface ServerMessage {
-    selectedContactUser: SelectedContactUser;
-    message: Message;
-    tempMessageId: string;
-}
+
 
 type PropType = {
     setMessages: React.Dispatch<React.SetStateAction<{ [key: string]: Message[] }>>;
@@ -33,160 +25,26 @@ type PropType = {
     selectedChat: SelectedChat;
 };
 
+
+
 const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
     const [showScrollButton, setShowScrollButton] = useState(false);
     const [chatId, setChatId] = useState<string>(selectedChat._id!)
     const chatEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user.user) || null;
     const selectedContact = useSelector((state: RootState) => state.active.selectedContact);
     const [editMessage, setEditMessage] = useState<Message | null>(null)
-
-    const { data: serverMessages, isLoading, isError } = useQuery({
-        queryKey: ['message-list', chatId, user],
-        queryFn: () => getMessages(chatId),
-        enabled: !!chatId,
-        refetchOnWindowFocus: false
-    });
-
-    useEffect(() => {
-        if (selectedChat) {
-            setChatId(selectedChat?._id!)
-        }
-    }, [selectedChat])
-
-    useEffect(() => {
-        if (serverMessages?.data && serverMessages.data?.length > 0) {
-            setMessages((prev) => ({
-                ...prev,
-                [chatId]: serverMessages?.data,
-            }));
-        }
-    }, [serverMessages?.data]);
-
-    useEffect(() => {
-        const handleServerMessage = (serverMessage: ServerMessage) => {
-            const socketMessageChatId = serverMessage?.message.chatId
-            const tempMessageId = serverMessage?.tempMessageId
-            if (!chatId) {
-                setChatId(socketMessageChatId)
-            }
-
-            if (serverMessage.message.author._id === user) {
-                setMessages((prev) => ({
-                    ...prev,
-                    [socketMessageChatId]: (prev[socketMessageChatId] || []).map((msg: Message): Message => {
-                        return msg._id === tempMessageId ? serverMessage?.message : msg
-                    })
-                }));
-            } else {
-                setMessages((prev) => ({
-                    ...prev,
-                    [socketMessageChatId]: [...(prev[socketMessageChatId] || []), serverMessage?.message]
-                }));
-
-                if (selectedChat?._id === serverMessage?.message?.chatId) {
-                    socket.emit("client:status:delivered", { chatId, userId: user, contactId: selectedChat?.contact?._id })
-                }
-            }
+    const [messageOperation, setMessageOperation] = useState<"reply" | "unsend" | null>(null)
 
 
-        };
-
-        socket.on('message:server', handleServerMessage);
-
-        return () => {
-            socket.off('message:server', handleServerMessage);
-        };
-    }, [user, socket]);
-
-    useEffect(() => {
-        const handleMessageServerEdit = (serverMessage: ServerMessage) => {
-            const socketMessageChatId = serverMessage?.message.chatId
-            const tempMessageId = serverMessage?.tempMessageId
-
-            if (!chatId) {
-                setChatId(socketMessageChatId)
-            }
-
-            setMessages((prev) => ({
-                ...prev,
-                [socketMessageChatId]: (prev[socketMessageChatId] || []).map((msg: Message): Message => {
-                    return msg._id === tempMessageId ? serverMessage?.message : msg
-                })
-            }));
-
-            if (serverMessage.message.author._id !== user) {
-                if (selectedChat?._id === serverMessage?.message?.chatId) {
-                    socket.emit("client:status:delivered", { chatId, userId: user, contactId: selectedChat?.contact?._id })
-                }
-            }
-
-
-
-        };
-
-        socket.on('message:server:edit', handleMessageServerEdit);
-
-        return () => {
-            socket.off('message:server:edit', handleMessageServerEdit);
-        };
-    }, [user, socket]);
-
-
-    useEffect(() => {
-        socket.on('message:status:update', (data) => {
-            const { messageId, status } = data;
-            setMessages((prev: MessagesState) => {
-                const updatedMessages = { ...prev };
-                Object.keys(updatedMessages).forEach(chatId => {
-                    updatedMessages[chatId] = updatedMessages[chatId].map(msg => {
-                        if (msg._id === messageId) {
-                            return { ...msg, status: status };
-                        }
-                        return msg;
-                    });
-                });
-                return updatedMessages;
-            });
-        });
-
-        return () => {
-            socket.off('message:status:update');
-        };
-    }, [socket]);
-
-    useEffect(() => {
-        socket.on("server:status:delivered", (message) => {
-            setMessages((prev: MessagesState) => {
-                return {
-                    ...prev, [message.chatId]: (prev[message.chatId] || []).map((msg) => {
-                        return msg._id === message._id ? { ...msg, status: 'seen' } : msg
-                    })
-                }
-            });
-        });
-
-        return () => {
-            socket.off('server:status:delivered');
-        };
-    }, [socket]);
-
-
-    useEffect(() => {
-        socket.emit("client:status:delivered", { chatId, userId: user })
-    }, [])
-
-    useEffect(() => {
-        scrollToBottomInstantly(chatContainerRef);
-    }, [messages, chatId]);
-
+    const { isError, isLoading } = useChatSectionHook({ setMessages, messages, selectedChat, chatContainerRef, chatId, setChatId, user })
 
 
     const memoizedMessages = useMemo(() => {
         const chatMessages = messages[chatId] || [];
         return chatMessages.map((message) => (
-            <ChatBubble setEditMessage={setEditMessage} key={message._id} isMe={user === message.author._id} message={message} />
+            <ChatBubble setEditMessage={setEditMessage} key={message._id} isMe={user === message.author._id} message={message} setMessageOperation={setMessageOperation} />
         ));
     }, [messages, chatId, selectedChat, selectedContact]);
 
@@ -201,7 +59,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
                     <Loading title='Getting your messages...' />
                 ) : (
                     <>
-                        <EditMessageDialog setMessages={setMessages} editMessage={editMessage} setEditMessage={setEditMessage} selectedChat={selectedChat} />
+                        <EditReplyMessageDialog setMessages={setMessages} editMessage={editMessage} setEditMessage={setEditMessage} selectedChat={selectedChat} messageOperation={messageOperation} setMessageOperation={setMessageOperation} />
                         {memoizedMessages}
                     </>
                 )}

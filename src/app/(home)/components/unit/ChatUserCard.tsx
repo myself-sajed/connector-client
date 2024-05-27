@@ -4,6 +4,7 @@ import { Chat } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { setContact, setSelectedChat } from '@/redux/slices/activeSlice'
 import { useDispatch } from 'react-redux'
+import { generateChatMessageTime } from '../../helpers/generateMessageTime'
 
 type PropType = {
     chat: Chat;
@@ -36,12 +37,15 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
                     </p>
                 </div>
             </div>
-            {
-                (chat.unreadCount?.[chat.contact._id] && chat.unreadCount?.[chat.contact._id] > 0)
-                    ? <div className="ml-auto font-medium">
-                        <Badge>{chat.unreadCount?.[chat.contact._id]}</Badge>
-                    </div> : ''
-            }
+            <div className="flex flex-col">
+                <span className="text-xs text-muted-foreground">{generateChatMessageTime(chat.lastMessage.updatedAt)}</span>
+                {
+                    (chat.unreadCount?.[chat.contact._id] && chat.unreadCount?.[chat.contact._id] > 0)
+                        ? <div className="ml-auto font-medium">
+                            <Badge>{chat.unreadCount?.[chat.contact._id]}</Badge>
+                        </div> : ''
+                }
+            </div>
         </div>
     )
 }

@@ -8,8 +8,9 @@ export interface Message {
   status?: "optimistic" | "sent" | "delivered" | "seen";
   showChevron?: boolean;
   isEdited: boolean;
-  createdAt?: string;
-  updatedAt: string;
+  messageRepliedTo?: Message;
+  createdAt?: string | number;
+  updatedAt: string | number;
 }
 
 export interface Contact {
