@@ -4,7 +4,7 @@ import { getChats } from "@/lib/api"
 import { useQuery } from "@tanstack/react-query"
 import { Badge } from "@/components/ui/badge"
 import Loading from "@/components/ui/loading"
-import { Chat, UnreadCount } from "@/lib/types"
+import { Chat } from "@/lib/types"
 import ChatUserCard from "../unit/ChatUserCard"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
@@ -14,13 +14,13 @@ import EmptyBar from "../unit/EmptyBar"
 import { tabs } from "@/lib/constants"
 import SearchBar from "../unit/SearchBar"
 import { setStoreChats } from "@/redux/slices/chatSlice"
-import { setSelectedChat } from "@/redux/slices/activeSlice"
 import { debounce } from 'lodash'
 
 const UserChatBar = () => {
     const userId = useSelector((state: RootState) => state.user.user) || null
     const [chats, setChats] = useState<Chat[]>([])
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -63,7 +63,7 @@ const UserChatBar = () => {
         }
     }, [serverChats?.data]);
 
-    const handleServerChat = useCallback(({ chat, shouldUpdateCount }: { chat: Chat, shouldUpdateCount: boolean }) => {
+    const handleServerChat = useCallback(({ chat, shouldUpdateCount, isEditing = false }: { chat: Chat, shouldUpdateCount: boolean, isEditing: boolean }) => {
         setChats((prevChats) => {
             let oldCount = 0
             const filteredPrevChats = prevChats.filter((itemChat) => {
@@ -72,7 +72,22 @@ const UserChatBar = () => {
                 }
                 return itemChat._id !== chat._id
             });
-            return [{ ...chat, unreadCount: { [chat.contact._id]: shouldUpdateCount ? 0 : oldCount + 1 } }, ...filteredPrevChats]
+            if (isEditing) {
+                return [
+                    {
+                        ...chat, unreadCount:
+                            { [chat.contact._id]: shouldUpdateCount ? 0 : oldCount }
+                    },
+                    ...filteredPrevChats
+                ]
+            }
+            return [
+                {
+                    ...chat, unreadCount:
+                        { [chat.contact._id]: shouldUpdateCount ? 0 : oldCount + 1 }
+                },
+                ...filteredPrevChats
+            ]
         })
     }, []);
 

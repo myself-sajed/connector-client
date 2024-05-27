@@ -15,6 +15,7 @@ import { RootState } from '@/redux/store';
 import socket from '@/lib/client-socket';
 import { SelectedChat } from '@/redux/slices/activeSlice';
 import { MessagesState } from './ChatContainer';
+import EditMessageDialog from './EditMessageDialog';
 
 interface SelectedContactUser extends Chat {
     contact: Contact;
@@ -39,6 +40,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const user = useSelector((state: RootState) => state.user.user);
     const selectedContact = useSelector((state: RootState) => state.active.selectedContact);
+    const [editMessage, setEditMessage] = useState<Message | null>(null)
 
     const { data: serverMessages, isLoading, isError } = useQuery({
         queryKey: ['message-list', chatId, user],
@@ -98,6 +100,39 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
         };
     }, [user, socket]);
 
+    useEffect(() => {
+        const handleMessageServerEdit = (serverMessage: ServerMessage) => {
+            const socketMessageChatId = serverMessage?.message.chatId
+            const tempMessageId = serverMessage?.tempMessageId
+
+            if (!chatId) {
+                setChatId(socketMessageChatId)
+            }
+
+            setMessages((prev) => ({
+                ...prev,
+                [socketMessageChatId]: (prev[socketMessageChatId] || []).map((msg: Message): Message => {
+                    return msg._id === tempMessageId ? serverMessage?.message : msg
+                })
+            }));
+
+            if (serverMessage.message.author._id !== user) {
+                if (selectedChat?._id === serverMessage?.message?.chatId) {
+                    socket.emit("client:status:delivered", { chatId, userId: user, contactId: selectedChat?.contact?._id })
+                }
+            }
+
+
+
+        };
+
+        socket.on('message:server:edit', handleMessageServerEdit);
+
+        return () => {
+            socket.off('message:server:edit', handleMessageServerEdit);
+        };
+    }, [user, socket]);
+
 
     useEffect(() => {
         socket.on('message:status:update', (data) => {
@@ -142,15 +177,16 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
         socket.emit("client:status:delivered", { chatId, userId: user })
     }, [])
 
-
     useEffect(() => {
         scrollToBottomInstantly(chatContainerRef);
     }, [messages, chatId]);
 
+
+
     const memoizedMessages = useMemo(() => {
         const chatMessages = messages[chatId] || [];
         return chatMessages.map((message) => (
-            <ChatBubble key={message._id} isMe={user === message.author._id} message={message} />
+            <ChatBubble setEditMessage={setEditMessage} key={message._id} isMe={user === message.author._id} message={message} />
         ));
     }, [messages, chatId, selectedChat, selectedContact]);
 
@@ -164,7 +200,10 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
                 ) : isLoading ? (
                     <Loading title='Getting your messages...' />
                 ) : (
-                    memoizedMessages
+                    <>
+                        <EditMessageDialog setMessages={setMessages} editMessage={editMessage} setEditMessage={setEditMessage} selectedChat={selectedChat} />
+                        {memoizedMessages}
+                    </>
                 )}
                 <div ref={chatEndRef} />
                 {showScrollButton && (

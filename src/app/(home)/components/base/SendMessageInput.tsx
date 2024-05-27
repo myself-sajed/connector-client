@@ -44,7 +44,10 @@ const SendMessageInput = ({ selectedChat, setMessages }: PropType) => {
                 _id: tempMessageId,
                 text: msgValue,
                 updatedAt: new Date().getTime(),
-                author: { _id: userId }
+                author: { _id: userId },
+                status: "optimistic",
+                showChevron: false,
+                isEdited: false
             }
 
 
