@@ -32,7 +32,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
     const [chatId, setChatId] = useState<string>(selectedChat._id!)
     const chatEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
-    const user = useSelector((state: RootState) => state.user.user) || null;
+    const user = useSelector((state: RootState) => state.user.user)?._id || null;
     const selectedContact = useSelector((state: RootState) => state.active.selectedContact);
     const [editMessage, setEditMessage] = useState<Message | null>(null)
     const [messageOperation, setMessageOperation] = useState<"reply" | "unsend" | null>(null)

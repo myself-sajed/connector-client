@@ -8,6 +8,7 @@ import {
 
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import { Toaster } from '@/components/ui/sonner'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
 
@@ -24,7 +25,10 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         <>
             <ReduxProvider store={store}>
                 <QueryClientProvider client={queryClient}>
-                    {children}
+                    <>
+                        {children}
+                        <Toaster position="top-right" toastOptions={{ duration: 2300 }} richColors={true} />
+                    </>
                 </QueryClientProvider>
             </ReduxProvider>
 

@@ -27,7 +27,7 @@ interface PropType {
 const SendMessageInput = ({ selectedChat, setMessages }: PropType) => {
 
     const messageRef = useRef<HTMLTextAreaElement>(null)
-    const userId = useSelector((state: RootState) => state.user?.user)
+    const userId = useSelector((state: RootState) => state.user.user)?._id
 
     useEffect(() => {
         messageRef.current?.focus()

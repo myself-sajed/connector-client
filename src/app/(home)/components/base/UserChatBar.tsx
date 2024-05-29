@@ -17,7 +17,7 @@ import { setStoreChats } from "@/redux/slices/chatSlice"
 import { debounce } from 'lodash'
 
 const UserChatBar = () => {
-    const userId = useSelector((state: RootState) => state.user.user) || null
+    const userId = useSelector((state: RootState) => state.user.user)?._id || null
     const [chats, setChats] = useState<Chat[]>([])
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 

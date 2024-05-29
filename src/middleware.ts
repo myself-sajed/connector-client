@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { authenticate } from "./lib/api";
 
-export function middleware(request: NextRequest) {
-  const userToken = request.cookies.get("token")?.value;
+export async function middleware(request: NextRequest) {
+  const userToken = request.cookies.get("userToken")?.value;
   const { pathname } = request.nextUrl;
-
-  console.log(userToken, pathname);
 
   if (pathname === "/login" && userToken) {
     return NextResponse.redirect(new URL("/", request.url));

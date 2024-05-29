@@ -20,7 +20,7 @@ const ChatContactCard = ({ contact, isSelected }: PropType) => {
     const dispatch = useDispatch()
     const currentTab = useSelector((state: RootState) => state.active?.currentTab)
     const storeChats = useSelector((state: RootState) => state.chat?.storeChats)
-    const user = useSelector((state: RootState) => state.user?.user)
+    const user = useSelector((state: RootState) => state.user.user)._id
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleContactSelect = () => {

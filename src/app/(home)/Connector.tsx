@@ -17,8 +17,6 @@ export default function Connector() {
   const tabMap = {
     Chats: <UserChatBar />,
     Contacts: <UserContactBar />,
-    Status: <div>Status</div>,
-    Settings: <div>Settings</div>,
     Profile: <div>Profile</div>
   }
 

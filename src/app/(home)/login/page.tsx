@@ -4,25 +4,46 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Empty from "../components/base/Empty"
-import { Lock, Waypoints } from "lucide-react"
-import { FormEvent, useRef } from "react"
+import { Loader, Lock, Waypoints } from "lucide-react"
+import { FormEvent, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { setLoggedInUser } from "@/redux/slices/loggedInUserSlice"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { login } from "@/lib/api"
 
 function Login() {
 
     const emailRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch()
     const router = useRouter()
 
-    const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (emailRef.current) {
-            dispatch(setLoggedInUser(emailRef.current?.value))
-            router.push('/')
+        if (emailRef.current && passwordRef.current) {
+            setIsLoading(true)
+
+            try {
+                const res = await login({ email: emailRef.current.value, password: passwordRef.current.value })
+
+                if (res.data.status === "success") {
+                    toast.success("Loging in...", {
+                        description: `Please wait while we are logging you in.`,
+                    })
+                    router.push('/')
+                } else if (res.data.status === "error") {
+                    toast.error(res.data.message)
+                }
+            } catch (error) {
+                toast.error("Internal Server Error")
+                console.log(error)
+            } finally {
+                setIsLoading(false)
+            }
+
         }
     }
 
@@ -44,17 +65,17 @@ function Login() {
                             <Input
                                 ref={emailRef}
                                 id="email"
-                                type="text"
+                                type="email"
                                 placeholder="m@example.com"
                                 required
                             />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" type="password" required />
+                            <Input ref={passwordRef} id="password" type="password" required />
                         </div>
-                        <Button type="submit" className="w-full">
-                            Login
+                        <Button disabled={isLoading} type="submit" className="w-full">
+                            {isLoading ? <Loader size={20} className="animate-spin" /> : "Login"}
                         </Button>
                     </div>
                     <div className="mt-4 text-center text-sm">

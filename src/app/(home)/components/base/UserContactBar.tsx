@@ -14,7 +14,7 @@ import SearchBar from "../unit/SearchBar"
 
 const UserContactBar = () => {
 
-    const user = useSelector((state: RootState) => state.user?.user) || null
+    const user = useSelector((state: RootState) => state.user.user)?._id || null
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
 
     const { data: contact, isLoading, isError, isFetching, refetch } = useQuery({
