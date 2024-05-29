@@ -30,7 +30,6 @@ const SelectedContact = ({ className }: { className?: string }) => {
     useEffect(() => {
 
         const handleStatus = ({ status, statusOf }: { status: string, statusOf: string }) => {
-            console.log(status, statusOf)
             if (statusOf === selectedContact?._id) {
                 setOnlineStatus(status)
             }
