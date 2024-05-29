@@ -73,6 +73,7 @@ const Sidebar = () => {
                 dispatch(setCurrentTab(tabs.CHATS))
 
                 toast.success("Logout successfully")
+                document.location.reload()
             } else {
                 toast.error("Could not logout, please try again...")
             }
