@@ -30,9 +30,7 @@ function Login() {
                 const res = await login({ email: emailRef.current.value, password: passwordRef.current.value })
 
                 if (res.data.status === "success") {
-                    toast.success("Loging in...", {
-                        description: `Please wait while we are logging you in.`,
-                    })
+                    toast.success("Logged in successfully")
                     router.push('/')
                 } else if (res.data.status === "error") {
                     toast.error(res.data.message)
