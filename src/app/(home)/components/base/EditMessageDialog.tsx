@@ -34,7 +34,7 @@ interface PropType {
 function EditReplyMessageDialog({ editMessage, setEditMessage, selectedChat, setMessages, messageOperation, setMessageOperation }: PropType) {
 
     const [message, setMessage] = useState<string | null>(null)
-    const userId = useSelector((state: RootState) => state.user.user)._id
+    const userId = useSelector((state: RootState) => state.user.user)?._id
 
     useEffect(() => {
         if (editMessage && messageOperation === null) {
