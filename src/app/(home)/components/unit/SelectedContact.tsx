@@ -73,7 +73,7 @@ const SelectedContact = ({ className }: { className?: string }) => {
             <ArrowLeft className="size-5 md:hidden block" />
             <Avatar className="md:h-9 h-7 md:w-9 w-7 flex">
                 <AvatarImage src={selectedContact.avatar} alt="Avatar" />
-                <AvatarFallback>{selectedContact.name}</AvatarFallback>
+                <AvatarFallback>{(selectedContact.name.split(""))[0]}</AvatarFallback>
             </Avatar>
         </div>
         <div className="flex flex-col">

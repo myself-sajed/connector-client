@@ -20,7 +20,7 @@ const ChatContactCard = ({ contact, isSelected }: PropType) => {
     const dispatch = useDispatch()
     const currentTab = useSelector((state: RootState) => state.active?.currentTab)
     const storeChats = useSelector((state: RootState) => state.chat?.storeChats)
-    const user = useSelector((state: RootState) => state.user.user)._id
+    const user = useSelector((state: RootState) => state.user.user)?._id
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleContactSelect = () => {
@@ -42,7 +42,7 @@ const ChatContactCard = ({ contact, isSelected }: PropType) => {
             <div className="flex items-start gap-4">
                 <Avatar className="h-9 w-9">
                     <AvatarImage src={contact.avatar} alt="Avatar" />
-                    <AvatarFallback>{contact.name}</AvatarFallback>
+                    <AvatarFallback>{(contact.name.split('')[0])}</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
                     <p className="text-sm font-medium leading-none">

@@ -26,7 +26,7 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
             <div className="flex items-start gap-4">
                 <Avatar className="h-9 w-9">
                     <AvatarImage src={contact.avatar} alt="Avatar" />
-                    <AvatarFallback>{contact.name}</AvatarFallback>
+                    <AvatarFallback>{(contact.name.split(""))[0]}</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
                     <p className="text-sm font-semibold leading-none">
