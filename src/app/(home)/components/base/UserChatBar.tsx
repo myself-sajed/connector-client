@@ -53,7 +53,6 @@ const UserChatBar = () => {
         queryKey: ['chat-list', userId],
         queryFn: () => getChats(userId),
         refetchOnWindowFocus: false,
-        staleTime: 600000,
         enabled: !!userId, // Only run the query if userId is available
     });
 

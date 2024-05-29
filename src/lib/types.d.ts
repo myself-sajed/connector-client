@@ -5,6 +5,7 @@ export interface Message {
   filename?: string | null;
   type: string;
   chatId: string;
+  audioUrl?: string | null;
   status?: "optimistic" | "sent" | "delivered" | "seen";
   showChevron?: boolean;
   isEdited: boolean;

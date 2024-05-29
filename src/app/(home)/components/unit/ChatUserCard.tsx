@@ -38,7 +38,7 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
                 </div>
             </div>
             <div className="flex flex-col">
-                <span className="text-xs text-muted-foreground">{generateChatMessageTime(chat.lastMessage.updatedAt)}</span>
+                <span className="text-xs text-muted-foreground">{generateChatMessageTime(chat?.lastMessage?.updatedAt)}</span>
                 {
                     (chat.unreadCount?.[chat.contact._id] && chat.unreadCount?.[chat.contact._id] > 0)
                         ? <div className="ml-auto font-medium">

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/tooltip"
 import { tabs } from "@/lib/constants"
 import { useDispatch, useSelector } from "react-redux"
-import { setCurrentTab } from "@/redux/slices/activeSlice"
+import { setContact, setCurrentTab, setSelectedChat } from "@/redux/slices/activeSlice"
 import { RootState } from "@/redux/store"
 
 const upperTabs = [
@@ -28,17 +28,9 @@ const upperTabs = [
         name: tabs.CONTACTS,
         icon: <Users className="size-5" />,
     },
-    {
-        name: tabs.STATUS,
-        icon: <CircleDashed className="size-5" />,
-    },
 ]
 
 const lowerTabs = [
-    {
-        name: tabs.SETTINGS,
-        icon: <Settings className="size-5" />,
-    },
     {
         name: tabs.PROFILE,
         icon: <SquareUser className="size-5" />,
@@ -99,7 +91,11 @@ const Sidebar = () => {
                                         size="icon"
                                         className={`rounded-lg`}
                                         aria-label={tab.name}
-                                        onClick={() => handleTabChange(tab.name)}
+                                        onClick={() => {
+                                            handleTabChange(tab.name);
+                                            dispatch(setSelectedChat(null))
+                                            dispatch(setContact(null))
+                                        }}
                                     >
                                         {tab.icon}
                                     </Button>

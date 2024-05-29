@@ -153,7 +153,7 @@ function EditReplyMessageDialog({ editMessage, setEditMessage, selectedChat, set
             };
         });
 
-        socket.emit("message:client:delete", editMessage)
+        socket.emit("message:client:delete", { message: editMessage, selectedChat })
     }
 
 

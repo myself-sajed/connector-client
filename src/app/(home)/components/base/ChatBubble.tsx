@@ -71,7 +71,13 @@ function ChatBubble({ message, isMe, setEditMessage, setMessageOperation }: Prop
 
 
                     {/* MESSAGE */}
-                    <p className="mr-10">{message.text}</p>
+                    {message.text && <p className="mr-10">{message.text}</p>}
+                    {message.audioUrl && (
+                        <audio controls >
+                            <source src={message.audioUrl} className="w-full" type="audio/wav" />
+                            Your browser does not support the audio element.
+                        </audio>
+                    )}
                     <p className='flex items-center justify-end text-[10px] mt-3 gap-3'>
                         {generateMessageTime(message.updatedAt)} {message.isEdited && <span>Edited </span>}
                         {isMe

@@ -17,6 +17,7 @@ import { SelectedChat } from "@/redux/slices/activeSlice"
 import { v4 as uuid } from "uuid"
 import { Message } from "@/lib/types"
 import { MessagesState } from "./ChatContainer"
+import VoiceRecorder from "./VoiceRecorder"
 
 interface PropType {
     selectedChat: SelectedChat;
@@ -81,45 +82,52 @@ const SendMessageInput = ({ selectedChat, setMessages }: PropType) => {
         }
     };
 
+    const handleVoiceStop = (audioBlob: Blob) => {
+        const tempMessageId = uuid();
+        const optimisticMessage = {
+            _id: tempMessageId,
+            audioUrl: URL.createObjectURL(audioBlob),
+            updatedAt: new Date().getTime(),
+            author: { _id: userId },
+            status: "optimistic",
+            showChevron: false,
+            isEdited: false
+        };
+
+        const chatData = {
+            selectedChat,
+            audioContent: audioBlob,
+            author: userId,
+            tempMessageId
+        };
+
+        socket.emit('voiceMessage:client', chatData);
+        if (selectedChat && selectedChat._id) {
+            const chatId = selectedChat._id as string;
+            setMessages((prev: MessagesState) => {
+                return {
+                    ...prev,
+                    [chatId]: [...(prev[chatId] || []), optimisticMessage]
+                };
+            });
+        } else {
+            console.error("Selected chat or chat ID is null or undefined");
+        }
+    };
+
 
     return (
-        <div className="relative rounded-lg border bg-background mt-2">
+        <div className="relative rounded-lg border bg-background mt-2 flex items-start">
             <Textarea ref={messageRef}
                 onKeyDown={handleKeyDown}
                 autoFocus={true}
                 placeholder="Type your message here..."
-                className="resize-none border-none p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
+                className="min-h-32 resize-none border-none flex-1 p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
             />
-            <div className="flex items-center p-3 pt-2 border-t">
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <Paperclip className="size-4" />
-                                <span className="sr-only">Attach file</span>
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">Attach File</TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-
-
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <Mic className="size-4" />
-                                <span className="sr-only">Use Microphone</span>
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">Use Microphone</TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-                <Button onClick={handleSubmit} type="submit" size="sm" className="ml-auto gap-1.5">
-                    Send
-                    <Send className="size-3.5" />
-                </Button>
-            </div>
+            <Button onClick={handleSubmit} type="submit" size="sm" className="ml-auto gap-1.5 m-3">
+                Send
+                <Send className="size-3.5" />
+            </Button>
         </div>
     )
 }
