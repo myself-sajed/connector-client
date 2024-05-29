@@ -11,6 +11,7 @@ import { setLoggedInUser } from "@/redux/slices/loggedInUserSlice"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { login } from "@/lib/api"
+import LoginRegisterHero from "./components/LoginRegisterHero"
 
 function Login() {
 
@@ -78,23 +79,14 @@ function Login() {
                     </div>
                     <div className="mt-4 text-center text-sm">
                         Don&apos;t have an account?{" "}
-                        <Link href="#" className="underline">
+                        <Link href="/signup" className="underline">
                             Sign up
                         </Link>
                     </div>
                 </form>
             </div>
             <div className="hidden bg-gray-100 lg:block">
-                <div className="relative z-30 flex items-center justify-center flex-col h-full">
-                    <Waypoints strokeWidth={2} size={100} className="text-primary" />
-                    <p style={{ lineHeight: '85px' }} className="text-[5rem] font-bold mt-10 text-primary">Connector</p>
-                    <p>The most trusted & secure chatting platform for everyone.</p>
-
-
-                    <div className="flex items-center gap-2 justify-center text-muted-foreground text-sm mt-[7rem]">
-                        <Lock size={13} /> Your chats are end-to-end encrypted.
-                    </div>
-                </div>
+                <LoginRegisterHero />
             </div>
         </div>
     )
