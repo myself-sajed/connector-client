@@ -1,6 +1,6 @@
 "use client";
 
-import { authenticate } from "@/lib/api";
+import { authenticate, logout } from "@/lib/api";
 import { Contact } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,9 +17,11 @@ const useAuth = () => {
         if (res.data.isAuth) {
           setUser(res.data.user);
         } else {
+          logout();
           router.replace("/login");
         }
       } catch (error) {
+        logout();
         setUser(null);
         router.replace("/login");
         console.log(error);

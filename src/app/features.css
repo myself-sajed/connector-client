@@ -24,4 +24,11 @@
     scrollbar-color: #b3b3b3 white;
     scroll-margin-inline: 5px;
   }
+
+
+
+  .loading-gradient{
+    background: rgb(13,70,195);
+background: linear-gradient(324deg, rgba(13,70,195,1) 0%, rgba(37,99,235,1) 66%);
+  }
   

@@ -1,5 +1,5 @@
 "use client"
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import LoginRegisterHero from '../login/components/LoginRegisterHero'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -8,29 +8,72 @@ import { Input } from '@/components/ui/input'
 import { ChevronLeft, Loader, RefreshCw, Waypoints } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import config from '@/lib/config'
+import { toast } from 'sonner'
+import { createUser } from '@/lib/api'
+import { useRouter } from 'next/navigation'
 
 const SignUp = () => {
 
-    const [step, setStep] = useState(2)
-    const [currentAvatar, setCurrentAvatar] = useState(1)
+    const [step, setStep] = useState(1)
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
-    const name = useRef<HTMLInputElement>(null)
-    const email = useRef<HTMLInputElement>(null)
-    const bio = useRef<HTMLInputElement>(null)
-    const password = useRef<HTMLInputElement>(null)
-    const passwordAgain = useRef<HTMLInputElement>(null)
+    const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordAgain: '', bio: '', avatar: 1 })
 
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+        setFormData((prev) => {
+            return { ...prev, [key]: e.target.value }
+        })
+    }
 
 
     const handleAvatarChange = () => {
-        const nextAvatar = currentAvatar + 1
-        setCurrentAvatar(nextAvatar > 10 ? 1 : nextAvatar)
+        const nextAvatar = formData.avatar + 1
+        setFormData((prev) => {
+            return { ...prev, avatar: nextAvatar > 10 ? 1 : nextAvatar }
+        })
     }
 
-    const handleRegistration = (event: FormEvent<HTMLFormElement>) => {
+    const handleRegistration = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (step === 1) {
             setStep(2)
+            return
+        }
+
+        if (step === 2) {
+
+            if (formData.password !== formData.passwordAgain) {
+                toast.error("Passwords doesn't match, try again...")
+                return
+            }
+
+            if (formData.avatar > 10) {
+                toast.error("Please select a valid avatar")
+                return
+            }
+
+            if (formData.name && formData.email) {
+
+                try {
+                    setIsLoading(true)
+                    const res = await createUser(formData);
+                    console.log(res)
+                    if (res.data.status === 'success') {
+                        toast.success("Registration Successfull")
+                        router.push("/")
+                    } else {
+                        toast.error(res.data.message)
+                    }
+                } catch (error) {
+                    toast.error("Internal Server Error")
+                } finally {
+                    setIsLoading(false)
+                }
+            } else {
+                toast.error("Please enter all fields.")
+                return
+            }
+
         }
     }
 
@@ -46,28 +89,30 @@ const SignUp = () => {
                         </p>
                     </div>
                     <div className="grid gap-4 mt-5">
+
                         {
                             step === 1 && <>
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Full Name</Label>
-                                    <Input ref={name} id="name" type="text" placeholder="Shaikh Sajed" required />
+                                    <Input onChange={(e) => handleInputChange(e, "name")} value={formData["name"]} type="text" placeholder="Shaikh Sajed" required />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input ref={email} id="email" type="email" placeholder="m@example.com" required />
+                                    <Input onChange={(e) => handleInputChange(e, "email")} value={formData["email"]} type="email" placeholder="m@example.com" required />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="bio">Bio (optional)</Label>
-                                    <Input ref={bio} id="bio" type="bio" placeholder="Tell us something..." />
+                                    <Input onChange={(e) => handleInputChange(e, "bio")} value={formData["bio"]} type="bio" placeholder="What is in your mind..." />
                                 </div>
                             </>
                         }
+
 
                         {
                             step === 2 && <>
                                 <div className="flex sm:items-center gap-5">
                                     <Avatar className="md:w-20 md:h-20 w-16 h-16 flex">
-                                        <AvatarImage className="object-cover" src={`${config.BACKEND_URL}/api/users/avatar/avatar-${currentAvatar}.jpg`} alt="Avatar" />
+                                        <AvatarImage className="object-cover" src={`${config.BACKEND_URL}/api/users/avatar/avatar-${formData.avatar}.jpg`} alt="Avatar" />
                                         <AvatarFallback>
                                             <Loader size={20} className="animate-spin" />
                                         </AvatarFallback>
@@ -81,13 +126,14 @@ const SignUp = () => {
                                         <Button onClick={handleAvatarChange} type="button" variant="link" disabled={isLoading} className="p-0 h-0 flex items-center gap-2 md:text-base text-sm"><RefreshCw strokeWidth={3} size={12} />Try a different Avatar</Button>
                                     </div>
                                 </div>
+
                                 <div className="grid gap-2 mt-3">
                                     <Label htmlFor="password">Password</Label>
-                                    <Input ref={password} id="password" type="password" required />
+                                    <Input onChange={(e) => handleInputChange(e, "password")} value={formData["password"]} type="password" required />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="password">Password, again</Label>
-                                    <Input ref={passwordAgain} id="passwordAgain" type="password" required />
+                                    <Input onChange={(e) => handleInputChange(e, "passwordAgain")} value={formData["passwordAgain"]} type="password" required />
                                 </div>
                             </>
                         }

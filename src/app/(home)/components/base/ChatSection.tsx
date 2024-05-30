@@ -14,7 +14,7 @@ import socket from '@/lib/client-socket';
 import { SelectedChat } from '@/redux/slices/activeSlice';
 import { MessagesState } from './ChatContainer';
 import EditReplyMessageDialog from './EditMessageDialog';
-import useChatSectionHook from '../../js/useChatSectionHook';
+import useChatSectionHook from '../../hooks/useChatSectionHook';
 
 
 

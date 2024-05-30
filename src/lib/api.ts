@@ -7,12 +7,25 @@ type LoginType = {
   password: string;
 };
 
+export interface CreateUserFormData {
+  name: string;
+  email: string;
+  password: string;
+  passwordAgain: string;
+  bio: string;
+  avatar: number;
+}
+
 const api = axios.create({
   baseURL: `${config.BACKEND_URL}/api`,
   withCredentials: true,
 });
 
 // api requests
+
+export const createUser = (formData: CreateUserFormData) =>
+  api.post(`/users/create`, formData);
+
 export const getUsers = (user: string | null) => api.get(`/users/${user}`);
 
 export const getChats = (meId: string | null) => api.get(`/chats/${meId}`);
