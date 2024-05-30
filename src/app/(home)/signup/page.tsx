@@ -11,6 +11,7 @@ import config from '@/lib/config'
 import { toast } from 'sonner'
 import { createUser } from '@/lib/api'
 import { useRouter } from 'next/navigation'
+import StepOneFields from './components/StepOneFields'
 
 const SignUp = () => {
 
@@ -19,7 +20,7 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordAgain: '', bio: '', avatar: 1 })
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: keyof typeof formData) => {
         setFormData((prev) => {
             return { ...prev, [key]: e.target.value }
         })
@@ -91,18 +92,7 @@ const SignUp = () => {
 
                         {
                             step === 1 && <>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="email">Full Name</Label>
-                                    <Input onChange={(e) => handleInputChange(e, "name")} value={formData["name"]} type="text" placeholder="Shaikh Sajed" required />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input onChange={(e) => handleInputChange(e, "email")} value={formData["email"]} type="email" placeholder="m@example.com" required />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="bio">Bio (optional)</Label>
-                                    <Input onChange={(e) => handleInputChange(e, "bio")} value={formData["bio"]} type="bio" placeholder="What is in your mind..." />
-                                </div>
+                                <StepOneFields formData={formData} handleInputChange={handleInputChange} />
                             </>
                         }
 
@@ -122,7 +112,7 @@ const SignUp = () => {
                                             <p className="text-xs text-muted-foreground">Please select any avatar you like.</p>
                                         </div>
 
-                                        <Button onClick={handleAvatarChange} type="button" variant="link" disabled={isLoading} className="p-0 h-0 flex items-center gap-2 md:text-base text-sm"><RefreshCw strokeWidth={3} size={12} />Try a different Avatar</Button>
+                                        <Button onClick={handleAvatarChange} type="button" variant="link" disabled={isLoading} className="p-0 h-0 flex items-center gap-2 md:text-base text-sm"><RefreshCw strokeWidth={3} size={12} /><span className='text-sm'>Try a different Avatar</span></Button>
                                     </div>
                                 </div>
 
