@@ -9,6 +9,7 @@ import { RootState } from "@/redux/store"
 import { TabType, tabs } from "@/lib/constants"
 import UserContactBar from "./components/base/UserContactBar"
 import EditProfile from "./components/base/EditProfile"
+import { useState } from "react"
 
 export default function Connector() {
 
@@ -21,6 +22,7 @@ export default function Connector() {
     Profile: <EditProfile />,
     Logout: <div>Logoing out...</div>
   }
+
 
   return (
     <div className="grid max-h-screen w-full pl-[56px]">
