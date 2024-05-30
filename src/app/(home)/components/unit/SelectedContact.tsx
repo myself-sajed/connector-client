@@ -72,7 +72,7 @@ const SelectedContact = ({ className }: { className?: string }) => {
         <div className="flex items-center gap-2 hover:bg-muted md:hover:bg-transparent rounded-full cursor-pointer p-2" onClick={handleBack}>
             <ArrowLeft className="size-5 md:hidden block" />
             <Avatar className="md:h-9 h-7 md:w-9 w-7 flex">
-                <AvatarImage src={selectedContact.avatar} alt="Avatar" />
+                <AvatarImage className="object-cover" src={selectedContact.avatar} alt="Avatar" />
                 <AvatarFallback>{(selectedContact.name.split(""))[0]}</AvatarFallback>
             </Avatar>
         </div>
