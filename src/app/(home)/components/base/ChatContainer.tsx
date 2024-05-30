@@ -27,7 +27,7 @@ const ChatContainer = ({ className }: { className?: string }) => {
 
 
     return (
-        <div className={cn("relative rounded-xl bg-muted/50 col-span-2  min-h-[calc(100vh-89px)] max-h-[calc(100vh-89px)] overflow-hidden w-full", className)}>
+        <div className={cn("relative rounded-xl bg-muted/50 col-span-2  min-h-[calc(100vh-89px)] max-h-[calc(100vh-89px)] overflow-hidden w-full border-t-4 border-x border-b  border-t-primary", className, currentActivity === activities.CHAT ? "p-3" : "p-0")}>
             {
                 (selectedContact && selectedChat && !selectedChat.generateChatId && selectedChat.openChatSection)
                     ? <>

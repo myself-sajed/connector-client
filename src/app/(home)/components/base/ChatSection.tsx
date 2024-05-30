@@ -49,7 +49,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
     }, [messages, chatId, selectedChat, selectedContact]);
 
     return (
-        <div className='relative h-[76%]'>
+        <div className='relative h-[76%] animate-fade animate-once animate-duration-[1500ms]'>
             <div className='h-full overflow-hidden overflow-y-auto md:px-[3.5rem] pr-1' onScroll={() => handleScroll(chatContainerRef, setShowScrollButton)} ref={chatContainerRef}>
                 {isError ? (
                     <Badge className="flex items-center justify-center w-full my-10">

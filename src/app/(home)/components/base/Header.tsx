@@ -17,6 +17,7 @@ const Header = () => {
     const closeChat = () => {
         dispatch(setSelectedChat(null))
         dispatch(setContact(null))
+        dispatch(setCurrentActivity(activities.CHAT))
     }
 
 

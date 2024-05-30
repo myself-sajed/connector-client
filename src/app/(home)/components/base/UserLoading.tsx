@@ -47,7 +47,7 @@ const MockChatBubble = ({ isMe, text, className }: { isMe: boolean, text: string
                 <p className="mr-10">{text}</p>
 
                 <p className='flex items-center justify-end text-[10px] mt-3 gap-3'>
-                    {generateMessageTime(new Date().getTime())}
+                    just now
                     {isMe
                         && <span>
                             <CheckCheck size={18} className="text-blue-900" />

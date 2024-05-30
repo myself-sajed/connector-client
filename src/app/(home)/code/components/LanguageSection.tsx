@@ -10,7 +10,7 @@ type PropTypes = {
 const LanguageSection = ({ language, setLanguage }: PropTypes) => {
 
     return (
-        <div className="w-full">
+        <div className="w-full animate-fade-left animate-once animate-duration-[1500ms] animate-delay-500">
             <Tabs onValueChange={(lang) => setLanguage(lang)} defaultValue="html" className="w-full p-1 m-1">
                 <TabsList className="md:space-x-10 sm:space-x-5 space-x-0">
                     {

@@ -89,7 +89,7 @@ const SendMessageInput = ({ selectedChat, setMessages }: PropType) => {
         }
     };
     return (
-        <div className="relative rounded-lg border bg-background mt-2 flex items-start">
+        <div className="relative rounded-lg border bg-background my-2 flex items-start animate-fade-up animate-once animate-duration-[500ms] animate-delay-500">
             <Textarea
                 ref={messageRef}
                 onKeyDown={handleKeyDown}
