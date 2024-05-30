@@ -16,7 +16,6 @@ const Home = () => {
   const { user, isLoading } = useAuth();
 
   useEffect(() => {
-    console.log(isLoading, user)
     if (!isLoading && !user) {
       router.push("/login");
     } else if (user) {

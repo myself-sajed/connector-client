@@ -57,7 +57,6 @@ const SignUp = () => {
                 try {
                     setIsLoading(true)
                     const res = await createUser(formData);
-                    console.log(res)
                     if (res.data.status === 'success') {
                         toast.success("Registration Successfull")
                         router.push("/")
