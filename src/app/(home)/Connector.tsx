@@ -8,6 +8,7 @@ import { useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { TabType, tabs } from "@/lib/constants"
 import UserContactBar from "./components/base/UserContactBar"
+import EditProfile from "./components/base/EditProfile"
 
 export default function Connector() {
 
@@ -17,7 +18,8 @@ export default function Connector() {
   const tabMap = {
     Chats: <UserChatBar />,
     Contacts: <UserContactBar />,
-    Profile: <div>Profile</div>
+    Profile: <EditProfile />,
+    Logout: <div>Logoing out...</div>
   }
 
   return (
