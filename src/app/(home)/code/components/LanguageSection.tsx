@@ -11,13 +11,13 @@ const LanguageSection = ({ language, setLanguage }: PropTypes) => {
 
     return (
         <div className="w-full">
-            <Tabs onValueChange={(lang) => setLanguage(lang)} defaultValue="html" className="w-full">
-                <TabsList className="space-x-10">
+            <Tabs onValueChange={(lang) => setLanguage(lang)} defaultValue="html" className="w-full p-1 m-1">
+                <TabsList className="md:space-x-10 sm:space-x-5 space-x-0">
                     {
                         languages.map((lang) => {
-                            return <TabsTrigger className="flex items-center gap-2" key={lang.lang} value={lang.lang}>
+                            return <TabsTrigger className="flex md:flex-row flex-col items-center gap-2 p-2" key={lang.lang} value={lang.lang}>
                                 <Image src={`/assets/${lang.icon}`} alt={lang.name} height={20} width={20} />
-                                <span>{lang.name}</span>
+                                <span className="md:text-sm text-xs">{lang.name}</span>
                             </TabsTrigger>
                         })
                     }
