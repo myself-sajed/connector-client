@@ -96,7 +96,7 @@ const EditProfile = () => {
     }
 
     return (
-        <div>
+        <div className='animate-fade-up animate-duration-1000'>
             <p className="text-xl text-primary font-semibold pb-2">Your Profile</p>
             <div className="flex items-start gap-5 my-5">
                 <Avatar className="md:w-16 md:h-16 w-12 h-12 flex">

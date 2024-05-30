@@ -28,7 +28,7 @@ const Header = () => {
         <header className="sticky top-0 z-10 h-[57px] items-center gap-4 flex justify-between md:grid md:grid-cols-3 border-b bg-background px-1.5 md:px-4">
             <LogoHeading className="hidden md:flex md:items-center" currentTab={currentTab} />
             {selectedChat &&
-                <div className="w-full flex items-center justify-between col-span-2">
+                <div className="w-full flex items-center justify-between col-span-2 animate-fade">
                     <SelectedContact />
                     <div className="flex items-center gap-2 justify-end">
                         <Tabs onValueChange={(tab) => dispatch(setCurrentActivity(tab))} defaultValue={activities.CHAT}>
