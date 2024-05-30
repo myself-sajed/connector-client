@@ -15,6 +15,13 @@ export interface CreateUserFormData {
   bio: string;
   avatar: number;
 }
+export interface UpdateUserFormData {
+  name: string;
+  email: string;
+  userId: string;
+  bio: string;
+  avatar: number;
+}
 
 const api = axios.create({
   baseURL: `${config.BACKEND_URL}/api`,
@@ -25,6 +32,9 @@ const api = axios.create({
 
 export const createUser = (formData: CreateUserFormData) =>
   api.post(`/users/create`, formData);
+
+export const editUser = (formData: UpdateUserFormData) =>
+  api.post(`/users/edit`, formData);
 
 export const getUsers = (user: string | null) => api.get(`/users/${user}`);
 
