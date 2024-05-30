@@ -77,7 +77,7 @@ const SelectedContact = ({ className }: { className?: string }) => {
             </Avatar>
         </div>
         <div className="flex flex-col">
-            <p className="font-semibold" >{selectedContact.name}</p>
+            <p className="font-semibold md:text-base sm:text-sm text-xs whitespace-nowrap text-ellipsis" >{selectedContact.name}</p>
             <span className="text-xs text-muted-foreground" style={{ lineHeight: '14px' }}>{typingStatus || onlineStatus}</span>
         </div>
     </div>
