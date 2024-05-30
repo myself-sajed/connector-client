@@ -1,5 +1,6 @@
 import {
     CircleDashed,
+    Loader,
     LogOut,
     MessageCircle,
     Settings,
@@ -23,6 +24,7 @@ import { useState } from "react"
 import { logout } from "@/lib/api"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 
 
@@ -53,6 +55,7 @@ const Sidebar = () => {
 
     const dispatch = useDispatch()
     const currentTab = useSelector((state: RootState) => state.active?.currentTab || tabs.CHATS)
+    const user = useSelector((state: RootState) => state.user?.user)
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
@@ -135,7 +138,18 @@ const Sidebar = () => {
                                             dispatch(setContact(null))
                                         }}
                                     >
-                                        {tab.icon}
+                                        {tab.name === tabs.PROFILE
+                                            ? <Avatar className="w-8 h-8 flex">
+                                                <AvatarImage
+                                                    className="object-cover"
+                                                    src={user?.avatar}
+                                                    alt="Avatar"
+                                                />
+                                                <AvatarFallback>
+                                                    {user?.name.charAt(0)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            : tab.icon}
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent side="right" sideOffset={5}>
