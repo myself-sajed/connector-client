@@ -3,9 +3,10 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import socket from "@/lib/client-socket"
+import { activities } from "@/lib/constants"
 import { Contact } from "@/lib/types"
 import { cn } from "@/lib/utils"
-import { SelectedChat, setContact, setSelectedChat } from "@/redux/slices/activeSlice"
+import { SelectedChat, setContact, setCurrentActivity, setSelectedChat } from "@/redux/slices/activeSlice"
 import { RootState } from "@/redux/store"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -23,6 +24,7 @@ const SelectedContact = ({ className }: { className?: string }) => {
         if (window.matchMedia('(max-width: 767px)').matches) {
             dispatch(setContact(null))
             dispatch(setSelectedChat(null))
+            dispatch(setCurrentActivity(activities.CHAT))
         }
 
     }
