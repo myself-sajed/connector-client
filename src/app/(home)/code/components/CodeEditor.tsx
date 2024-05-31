@@ -104,7 +104,7 @@ function CodeEditor() {
 
     return (
         selectedChat && (
-            <div className="w-full col-span-2 h-full animate-fade animate-once animate-duration-[1500ms]">
+            <div className="w-full col-span-2 h-full animate-fade animate-once animate-duration-[800ms]">
                 <LanguageSection language={language} setLanguage={setLanguage} />
                 <Editor
                     language={language}
