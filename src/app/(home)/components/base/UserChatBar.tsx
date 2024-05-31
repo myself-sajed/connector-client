@@ -110,7 +110,6 @@ const UserChatBar = () => {
         };
     }, [handleChatUnreadCount]);
 
-    const debouncedRefetch = useCallback(debounce(refetch, 300), []);
 
     useEffect(() => {
         if (chats.length) {
@@ -118,13 +117,24 @@ const UserChatBar = () => {
         }
     }, [chats, dispatch]);
 
-    const onSearch = () => {
-        debouncedRefetch();
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let searchText = e.target.value
+
+        if (searchText === "" || searchText === undefined || searchText === null) {
+            setChats(serverChats?.data)
+        } else {
+            searchText = searchText.trim().toLowerCase()
+            setChats((prev) => {
+                return prev.filter((user: Chat) => {
+                    return ((user.contact.name).toLowerCase()).includes(searchText)
+                })
+            })
+        }
     }
 
     return (
         <div className="relative flex-col items-start gap-2 flex h-full">
-            <SearchBar tooltipText="Refresh Chats" isLoading={isLoading} isFetching={isFetching} refetch={debouncedRefetch} onSearch={onSearch} />
+            <SearchBar tooltipText="Refresh Chats" isLoading={isLoading} isFetching={isFetching} refetch={refetch} onSearch={onSearch} />
             {
                 isError
                     ? <Badge variant="destructive" className="my-10">

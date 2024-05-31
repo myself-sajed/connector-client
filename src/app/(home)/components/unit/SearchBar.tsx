@@ -8,7 +8,7 @@ import React from 'react'
 
 type PropType = {
     refetch: () => void;
-    onSearch: () => void;
+    onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
     isLoading: boolean;
     isFetching: boolean;
     tooltipText: string;

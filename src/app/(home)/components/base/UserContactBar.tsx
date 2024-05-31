@@ -11,11 +11,13 @@ import { RootState } from "@/redux/store"
 import EmptyBar from "../unit/EmptyBar"
 import { tabs } from "@/lib/constants"
 import SearchBar from "../unit/SearchBar"
+import { useEffect, useState } from "react"
 
 const UserContactBar = () => {
 
     const user = useSelector((state: RootState) => state.user.user)?._id || null
     const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
+    const [users, setUsers] = useState([])
 
     const { data: contact, isLoading, isError, isFetching, refetch } = useQuery({
         queryKey: ['contact-list'],
@@ -24,8 +26,25 @@ const UserContactBar = () => {
         staleTime: 100000
     })
 
-    const onSearch = () => {
+    useEffect(() => {
+        if (contact?.data) {
+            setUsers(contact?.data)
+        }
+    }, [contact?.data])
 
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let searchText = e.target.value
+
+        if (searchText === "" || searchText === undefined || searchText === null) {
+            setUsers(contact?.data)
+        } else {
+            searchText = searchText.trim().toLowerCase()
+            setUsers((prev) => {
+                return prev.filter((user: Contact) => {
+                    return ((user.name).toLowerCase()).includes(searchText)
+                })
+            })
+        }
     }
 
     return (
@@ -38,9 +57,9 @@ const UserContactBar = () => {
                     </Badge>
                     : isLoading
                         ? <Loading title="Fetching Contacts..." />
-                        : contact?.data?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)] pr-5">
+                        : users?.length > 0 ? <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)] pr-5">
                             {
-                                contact?.data.map((contact: Contact) => {
+                                users.map((contact: Contact) => {
                                     return <ChatContactCard key={contact._id} contact={contact} isSelected={contact._id === selectedContact?._id} />
                                 })
                             }
