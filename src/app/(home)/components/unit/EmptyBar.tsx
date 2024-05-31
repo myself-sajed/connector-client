@@ -7,6 +7,7 @@ import { setCurrentTab } from '@/redux/slices/activeSlice';
 import { ChevronRight, ExternalLink, MessageCircle, Users } from 'lucide-react';
 import React from 'react'
 import { useDispatch } from 'react-redux';
+import { toast } from 'sonner';
 
 type PropType = {
     type: string;
@@ -17,8 +18,9 @@ const EmptyBar = ({ type }: PropType) => {
     const dispatch = useDispatch()
 
     const inviteLink = () => {
-        const link = config.FRONTEND_URL + '/register'
+        const link = config.FRONTEND_URL + '/signup'
         navigator.clipboard.writeText(link)
+        toast.success("Invite link copied, send it to your friends.")
     }
 
     return (

@@ -8,6 +8,7 @@ type LoginType = {
 };
 
 export interface CreateUserFormData {
+  username: string;
   name: string;
   email: string;
   password: string;
@@ -16,6 +17,7 @@ export interface CreateUserFormData {
   avatar: number;
 }
 export interface UpdateUserFormData {
+  username: string;
   name: string;
   email: string;
   userId: string;
@@ -23,7 +25,7 @@ export interface UpdateUserFormData {
   avatar: number;
 }
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: `${config.BACKEND_URL}/api`,
   withCredentials: true,
 });

@@ -12,6 +12,7 @@ import { editUser } from '@/lib/api';
 import { setCurrentTab } from '@/redux/slices/activeSlice';
 import { tabs } from '@/lib/constants';
 import { setLoggedInUser } from '@/redux/slices/loggedInUserSlice';
+import { Username } from '../../signup/page';
 
 type EditProfileFormData = {
     name: string;
@@ -23,7 +24,7 @@ type EditProfileFormData = {
 
 const EditProfile = () => {
     const user = useSelector((state: RootState) => state.user?.user);
-    const router = useRouter()
+    const [username, setUsername] = useState<Username>({ text: "", isValid: false, isEditPage: "" })
     const dispatch = useDispatch()
     const [formData, setFormData] = useState<EditProfileFormData>({
         name: '',
@@ -42,6 +43,10 @@ const EditProfile = () => {
                 bio: user.bio,
                 avatar: avatarNumber,
             });
+
+            setUsername(() => {
+                return { text: user.username, isValid: true, isEditPage: user.username }
+            })
         }
     }, [user]);
 
@@ -70,11 +75,16 @@ const EditProfile = () => {
             return
         }
 
-        if (formData.name && formData.email) {
+        if (username.text.length < 4) {
+            toast.error("Username must be at least 4 characters")
+            return
+        }
+
+        if (formData.name && formData.email && username.isValid) {
 
             try {
                 setIsLoading(true)
-                const res = await editUser({ ...formData, userId: user?._id! });
+                const res = await editUser({ ...formData, userId: user?._id!, username: username.text });
                 if (res.data.status === 'success') {
                     console.log(res.data)
                     toast.success("Profile Updated")
@@ -133,7 +143,7 @@ const EditProfile = () => {
             <div className="h-7"></div>
 
             <form onSubmit={handleEditProfile} className='space-y-5'>
-                <StepOneFields formData={formData} handleInputChange={handleInputChange} />
+                <StepOneFields setUsername={setUsername} username={username} formData={formData} handleInputChange={handleInputChange} />
                 <Button disabled={isLoading} type="submit" className="w-full">
                     {isLoading ? <Loader size={20} className="animate-spin" /> : "Update Profile"}
                 </Button>

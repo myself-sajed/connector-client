@@ -16,6 +16,7 @@ export interface Message {
 
 export interface Contact {
   _id: string;
+  username: string;
   name: string;
   email: string;
   bio: string;

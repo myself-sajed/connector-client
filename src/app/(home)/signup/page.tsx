@@ -1,11 +1,11 @@
 "use client"
-import React, { ChangeEvent, FormEvent, useRef, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import LoginRegisterHero from '../login/components/LoginRegisterHero'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { ChevronLeft, Loader, RefreshCw, Waypoints } from 'lucide-react'
+import { ChevronLeft, Loader, RefreshCw, Type, Waypoints } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import config from '@/lib/config'
 import { toast } from 'sonner'
@@ -13,12 +13,21 @@ import { createUser } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import StepOneFields from './components/StepOneFields'
 
+export type Username = {
+    text: string;
+    isValid: boolean;
+    isEditPage: boolean | string;
+}
+
 const SignUp = () => {
 
     const [step, setStep] = useState(1)
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordAgain: '', bio: '', avatar: 1 })
+    const [username, setUsername] = useState<Username>({
+        text: "", isValid: false, isEditPage: false
+    })
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>, key: keyof typeof formData) => {
         setFormData((prev) => {
@@ -53,11 +62,16 @@ const SignUp = () => {
                 return
             }
 
-            if (formData.name && formData.email) {
+            if (!username.isValid) {
+                toast.error("Please select a valid username")
+                return
+            }
+
+            if (formData.name && formData.email && username.isValid) {
 
                 try {
                     setIsLoading(true)
-                    const res = await createUser(formData);
+                    const res = await createUser({ ...formData, username: username.text });
                     if (res.data.status === 'success') {
                         toast.success("Registration Successfull")
                         router.push("/")
@@ -79,8 +93,8 @@ const SignUp = () => {
 
     return (
         <div className="w-full lg:grid lg:grid-cols-2 h-screen">
-            <div className="flex items-center justify-center py-12">
-                <form onSubmit={handleRegistration} className="mx-auto grid md:w-[50%] w-[80%] gap-6">
+            <div className="flex items-center justify-center py-5">
+                <form onSubmit={handleRegistration} className="mx-auto grid md:w-[50%] sm:w-[80%] w-[95%] gap-6">
                     <div className="grid gap-1 text-center items-center">
                         <Waypoints strokeWidth={2} size={40} className="text-primary mx-auto mb-5" />
                         <h1 className="sm:text-3xl text-2xl font-bold mt-3">Signup to Connector</h1>
@@ -92,7 +106,7 @@ const SignUp = () => {
 
                         {
                             step === 1 && <>
-                                <StepOneFields formData={formData} handleInputChange={handleInputChange} />
+                                <StepOneFields setUsername={setUsername} username={username} formData={formData} handleInputChange={handleInputChange} />
                             </>
                         }
 
@@ -103,7 +117,7 @@ const SignUp = () => {
                                     <Avatar className="md:w-20 md:h-20 w-16 h-16 flex">
                                         <AvatarImage className="object-cover" src={`${config.BACKEND_URL}/api/users/avatar/avatar-${formData.avatar}.jpg`} alt="Avatar" />
                                         <AvatarFallback>
-                                            <Loader size={20} className="animate-spin" />
+                                            <Loader size={25} className="animate-spin" />
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className='space-y-5'>
@@ -128,7 +142,7 @@ const SignUp = () => {
                         }
 
                         {
-                            step === 1 && <Button disabled={isLoading} type="submit" className="w-full mt-5">
+                            step === 1 && <Button disabled={!username.isValid || username.text.length < 4} type="submit" className="w-full mt-5">
                                 Go to Next Step
                             </Button>
                         }
