@@ -124,8 +124,8 @@ const UserChatBar = () => {
             setChats(serverChats?.data)
         } else {
             searchText = searchText.trim().toLowerCase()
-            setChats((prev) => {
-                return prev.filter((user: Chat) => {
+            setChats(() => {
+                return serverChats?.data?.filter((user: Chat) => {
                     return ((user.contact.name).toLowerCase()).includes(searchText)
                 })
             })

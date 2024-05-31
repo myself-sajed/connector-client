@@ -39,8 +39,8 @@ const UserContactBar = () => {
             setUsers(contact?.data)
         } else {
             searchText = searchText.trim().toLowerCase()
-            setUsers((prev) => {
-                return prev.filter((user: Contact) => {
+            setUsers(() => {
+                return contact?.data.filter((user: Contact) => {
                     return ((user.name).toLowerCase()).includes(searchText)
                 })
             })
