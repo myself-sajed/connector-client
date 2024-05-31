@@ -18,7 +18,7 @@ const Empty = () => {
                 <Waypoints strokeWidth={2} size={100} className="text-primary" />
 
                 <p style={{ lineHeight: '85px' }} className="text-[5rem] font-bold mt-10 text-primary">Connector</p>
-                <p>The most trusted & secure chatting platform for everyone.</p>
+                <p>The most efficient chatting & code sharing platform for everyone.</p>
 
 
                 <Button onClick={() => dispatch(setCurrentTab(tabs.CONTACTS))} className='mt-10 flex items-center justify-center gap-5'><span>Start Chatting</span><ChevronRight strokeWidth={2.5} size={17} /></Button>
