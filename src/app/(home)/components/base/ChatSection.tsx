@@ -61,6 +61,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
                     memoizedMessages.length > 0 ? <div className='h-full'>
                         <EditReplyMessageDialog setMessages={setMessages} editMessage={editMessage} setEditMessage={setEditMessage} selectedChat={selectedChat} messageOperation={messageOperation} setMessageOperation={setMessageOperation} />
                         {memoizedMessages}
+                        <div ref={chatEndRef} />
                     </div> : <div className='flex items-center justify-center flex-col h-full text-muted-foreground gap-4 relative'>
                         <MessageCircleWarning />
                         <p className='text-center text-sm'>No new messages found...</p>
@@ -70,7 +71,7 @@ const ChatSection = ({ messages, setMessages, selectedChat }: PropType) => {
                         </div>
                     </div>
                 )}
-                <div ref={chatEndRef} />
+
                 {showScrollButton && (
                     <ChevronDown onClick={() => scrollToBottom(chatEndRef)} className='text-muted-foreground absolute bottom-5 z-30 rounded-full right-4 drop-shadow-md cursor-pointer bg-white hover:bg-gray-100 shadow-md p-2' size={40} strokeWidth={2} />
                 )}
