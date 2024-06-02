@@ -1,27 +1,65 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 
 import Sidebar from "./components/base/Sidebar"
 import UserChatBar from "./components/base/UserChatBar"
 import ChatContainer from "./components/base/ChatContainer"
 import Header from "./components/base/Header"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { TabType, tabs } from "@/lib/constants"
 import UserContactBar from "./components/base/UserContactBar"
 import EditProfile from "./components/base/EditProfile"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import socket from "@/lib/client-socket"
+import { setContact, setSelectedChat } from "@/redux/slices/activeSlice"
+import { Chat } from "@/lib/types"
+import { toast } from "sonner"
 
 export default function Connector() {
 
   const currentTab = useSelector((state: RootState) => state.active?.currentTab) as TabType
   const selectedContact = useSelector((state: RootState) => state.active?.selectedContact)
+  const selectedChat = useSelector((state: RootState) => state.active?.selectedChat)
+
+  const dispatch = useDispatch()
 
   const tabMap = {
     Chats: <UserChatBar />,
     Contacts: <UserContactBar />,
     Profile: <EditProfile />,
-    Logout: <div>Logoing out...</div>
+    Logout: <div>Loging out...</div>
   }
+
+  const handleSeeMessage = (chat: Chat) => {
+    dispatch(setSelectedChat({ ...chat, generateChatId: false, openChatSection: true }))
+    dispatch(setContact(chat.contact))
+  }
+
+  useEffect(() => {
+    socket.on("chat:notification", (chat) => {
+
+      if (selectedChat?._id !== chat._id) {
+        toast(`${chat.lastMessage.author.name} just messaged you.`, {
+          description: `${chat.lastMessage.text}`,
+          duration: 10000,
+          position: "bottom-right",
+          action: {
+            label: "See message",
+            onClick: () => {
+              handleSeeMessage(chat)
+            },
+          },
+        });
+        const audio = new Audio("/assets/notification.mp3");
+        audio.play().catch(() => console.log('Playing tune...'))
+      }
+    })
+
+    return () => {
+      socket.off("chat:notification")
+    }
+  }, [selectedChat])
 
 
   return (
