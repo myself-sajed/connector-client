@@ -12,4 +12,4 @@ export const activities = {
 
 export type TabType = (typeof tabs)[keyof typeof tabs];
 
-export const LIMIT = 20;
+export const LIMIT = 5;

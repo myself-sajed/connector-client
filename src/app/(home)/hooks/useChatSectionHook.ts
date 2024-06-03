@@ -46,7 +46,7 @@ const useChatSectionHook = ({
     isError,
   } = useQuery({
     queryKey: ["message-list", chatId, user],
-    queryFn: () => getMessages(chatId),
+    queryFn: () => getMessages(chatId, 1),
     enabled: !!chatId,
     refetchOnWindowFocus: false,
   });
