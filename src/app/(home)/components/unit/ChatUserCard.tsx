@@ -25,7 +25,7 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
         <div className={cn("flex items-start justify-between px-2 py-4 cursor-pointer hover:bg-muted  transition duration-200 w-full animate-fade-up animate-duration-1000", isSelected ? "bg-muted" : "")} onClick={handleContactSelect}>
             <div className="flex items-start gap-4">
                 <Avatar className="h-9 w-9">
-                    <AvatarImage src={contact.avatar} alt="Avatar" />
+                    <AvatarImage className='object-cover' src={contact.avatar} alt="Avatar" />
                     <AvatarFallback>{(contact.name.split(""))[0]}</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-1">
