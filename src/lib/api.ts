@@ -1,6 +1,7 @@
 // create axios instance
 import axios from "axios";
 import config from "./config";
+import { LIMIT } from "./constants";
 
 type LoginType = {
   email: string;
@@ -45,7 +46,8 @@ export const getChats = (meId: string | null) => api.get(`/chats/${meId}`);
 export const createChat = (contactId: string, meId: string) =>
   api.post(`/chats/create`, { contactId, meId });
 
-export const getMessages = (chatId: string) => api.get(`/messages/${chatId}`);
+export const getMessages = (chatId: string, page: number) =>
+  api.get(`/messages/${chatId}?page=${page}&limit=${LIMIT}`);
 
 export const authenticate = () => {
   return api.get("/auth/authenticate");
