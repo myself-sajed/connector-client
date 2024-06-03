@@ -90,8 +90,6 @@ const StepOneFields = <T extends Record<string, any>>({
         debouncedCheckUsername(newUsername);
     };
 
-    console.log(username)
-
 
     return (
         <>

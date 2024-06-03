@@ -86,7 +86,6 @@ const EditProfile = () => {
                 setIsLoading(true)
                 const res = await editUser({ ...formData, userId: user?._id!, username: username.text });
                 if (res.data.status === 'success') {
-                    console.log(res.data)
                     toast.success("Profile Updated")
                     dispatch(setCurrentTab(tabs.CHATS))
                     dispatch(setLoggedInUser(res.data.user))

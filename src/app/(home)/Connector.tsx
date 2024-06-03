@@ -52,7 +52,7 @@ export default function Connector() {
           },
         });
         const audio = new Audio("/assets/notification.mp3");
-        audio.play().catch(() => console.log('Playing tune...'))
+        audio.play().catch(() => console.log(''))
       }
     })
 
