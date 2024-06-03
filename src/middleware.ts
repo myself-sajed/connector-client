@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { authenticate } from "./lib/api";
 
 export async function middleware(request: NextRequest) {
   const userToken = request.cookies.get("userToken")?.value;
