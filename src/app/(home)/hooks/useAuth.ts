@@ -4,6 +4,7 @@ import { authenticate, logout } from "@/lib/api";
 import { Contact } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { removeUserToken } from "../helpers/localStorageHandler";
 
 const useAuth = () => {
   const [isLoading, setLoading] = useState(true);
@@ -17,11 +18,11 @@ const useAuth = () => {
         if (res.data.isAuth) {
           setUser(res.data.user);
         } else {
-          logout();
+          removeUserToken();
           router.replace("/login");
         }
       } catch (error) {
-        logout();
+        removeUserToken();
         setUser(null);
         router.replace("/login");
         console.log(error);
