@@ -96,10 +96,10 @@ const SendMessageInput = ({ selectedChat, setMessages }: PropType) => {
                 onKeyUp={handleKeyDown}
                 autoFocus={true}
                 placeholder="Type your message here..."
-                className="min-h-32 resize-none border-none flex-1 p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
+                className="sm:min-h-32 min-h-24 resize-none border-none flex-1 p-3 outline-none focus-visible:ring-0 focus-visible:outline-none focus-visible:ring-offset-0"
             />
             <Button onClick={handleSubmit} type="submit" size="sm" className="ml-auto gap-1.5 m-3">
-                Send
+                <span className="sm:block hidden">Send</span>
                 <Send className="size-3.5" />
             </Button>
         </div>

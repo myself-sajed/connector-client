@@ -34,9 +34,9 @@ function ChatBubble({ message, isMe, setEditMessage, setMessageOperation }: Prop
     const isReplyMessage = message.messageRepliedTo ? true : false
 
     return (
-        <div onDoubleClick={replyHandler} className={`flex ${isMe ? 'justify-end' : 'justify-start'} mb-4 text-sm`}>
-            <div className={cn("max-w-xs", isReplyMessage ? `border ${isMe ? 'rounded-bl-2xl' : 'rounded-br-2xl'}` : '')}>
-                {isReplyMessage && <div className="bg-muted p-2">
+        <div onDoubleClick={replyHandler} className={`flex ${isMe ? 'justify-end' : 'justify-start'} sm:mb-4 mb-2 md:text-sm sm:text-sm text-[11px]`}>
+            <div className={cn("max-w-xs rounded-t-lg", isReplyMessage ? `border ${isMe ? 'rounded-bl-2xl' : 'rounded-br-2xl'}` : '')}>
+                {isReplyMessage && <div className="bg-muted p-2 rounded-t-lg">
                     <p className="text-muted-foreground text-xs">Replied to</p>
                     <p>{message.messageRepliedTo?.text}</p>
                 </div>}
@@ -78,7 +78,7 @@ function ChatBubble({ message, isMe, setEditMessage, setMessageOperation }: Prop
                             Your browser does not support the audio element.
                         </audio>
                     )}
-                    <p className='flex items-center justify-end text-[10px] mt-3 gap-3'>
+                    <p className='flex items-center justify-end sm:text-[10px] text-[9px] sm:mt-3 mt-1 gap-3'>
                         {generateMessageTime(message.updatedAt)} {message.isEdited && <span>Edited </span>}
                         {isMe
                             && <span>
