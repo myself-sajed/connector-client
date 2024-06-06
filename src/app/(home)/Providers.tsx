@@ -9,6 +9,7 @@ import {
 import React from 'react'
 import { usePathname } from 'next/navigation'
 import { Toaster } from '@/components/ui/sonner'
+import useAuthenticate from './hooks/useAuthenticate'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
 
@@ -21,6 +22,10 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
             }
         }
     })
+
+
+    useAuthenticate()
+
     return (
         <>
             <ReduxProvider store={store}>
