@@ -67,8 +67,10 @@ const Sidebar = () => {
 
     const handleLogout = async () => {
         removeUserToken()
+        window.location.reload()
         router.replace('/login')
         toast.success("Logged out successfully.")
+
     }
 
     return (
