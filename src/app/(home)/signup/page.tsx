@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { createUser } from '@/lib/api'
 import { useRouter } from 'next/navigation'
 import StepOneFields from './components/StepOneFields'
+import { setUserToken } from '../helpers/localStorageHandler'
 
 export type Username = {
     text: string;
@@ -74,7 +75,8 @@ const SignUp = () => {
                     const res = await createUser({ ...formData, username: username.text });
                     if (res.data.status === 'success') {
                         toast.success("Registration Successfull")
-                        router.push("/")
+                        setUserToken(res.data.token)
+                        router.replace("/")
                     } else {
                         toast.error(res.data.message)
                     }
