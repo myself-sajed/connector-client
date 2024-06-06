@@ -35,4 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/src/lib/config.ts
+# Ignore the config.ts file in the src/lib directory
+src/lib/config.ts
