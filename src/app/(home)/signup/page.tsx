@@ -96,7 +96,7 @@ const SignUp = () => {
     return (
         <div className="w-full lg:grid lg:grid-cols-2 h-screen">
             <div className="flex items-center justify-center py-5">
-                <form onSubmit={handleRegistration} className="mx-auto grid md:w-[50%] sm:w-[80%] w-[95%] gap-6">
+                <form onSubmit={handleRegistration} className="mx-auto grid md:w-[50%] sm:w-[80%] w-[90%] gap-6">
                     <div className="grid gap-1 text-center items-center">
                         <Waypoints strokeWidth={2} size={40} className="text-primary mx-auto mb-5" />
                         <h1 className="sm:text-3xl text-2xl font-bold mt-3">Signup to Connector</h1>
