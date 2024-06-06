@@ -2,6 +2,7 @@
 import axios from "axios";
 import config from "./config";
 import { LIMIT } from "./constants";
+import { getUserToken } from "@/app/(home)/helpers/localStorageHandler";
 
 type LoginType = {
   email: string;
@@ -50,7 +51,8 @@ export const getMessages = (chatId: string, page: number) =>
   api.get(`/messages/${chatId}?page=${page}&limit=${LIMIT}`);
 
 export const authenticate = () => {
-  return api.get("/auth/authenticate");
+  const userToken = getUserToken();
+  return api.post("/auth/authenticate", { userToken });
 };
 
 export const login = ({ email, password }: LoginType) => {
