@@ -52,7 +52,7 @@ function Login() {
     return (
         <div className="w-full lg:grid lg:grid-cols-2 h-screen">
             <div className="flex items-center justify-center py-12">
-                <form onSubmit={handleLogin} className="mx-auto grid w-[50%] gap-6">
+                <form onSubmit={handleLogin} className="mx-auto grid md:w-[50%] w-[90%] gap-6">
                     <div className="grid gap-1 text-center items-center">
                         <Waypoints strokeWidth={2} size={40} className="text-primary mx-auto mb-5" />
                         <h1 className="text-3xl font-bold mt-3">Login to Connector</h1>
