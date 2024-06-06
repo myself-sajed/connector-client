@@ -25,6 +25,7 @@ import { logout } from "@/lib/api"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { removeUserToken } from "../../helpers/localStorageHandler"
 
 
 
@@ -65,27 +66,9 @@ const Sidebar = () => {
     }
 
     const handleLogout = async () => {
-        try {
-            setIsLoading(true)
-            const res = await logout()
-            if (res.data.status === "success") {
-                router.push('/login')
-
-                dispatch(setSelectedChat(null))
-                dispatch(setContact(null))
-                dispatch(setCurrentTab(tabs.CHATS))
-
-                toast.success("Logout successfully")
-                document.location.reload()
-            } else {
-                toast.error("Could not logout, please try again...")
-            }
-        } catch (error) {
-            console.log(error)
-            toast.error("Could not logout, please try again...")
-        } finally {
-            setIsLoading(false)
-        }
+        removeUserToken()
+        router.replace('/login')
+        toast.success("Logged out successfully.")
     }
 
     return (
