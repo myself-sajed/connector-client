@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { login } from "@/lib/api"
 import LoginRegisterHero from "./components/LoginRegisterHero"
+import { setUserToken } from "../helpers/localStorageHandler"
 
 function Login() {
 
@@ -32,7 +33,8 @@ function Login() {
 
                 if (res.data.status === "success") {
                     toast.success("Logged in successfully")
-                    router.push('/')
+                    setUserToken(res.data.token)
+                    router.replace('/')
                 } else if (res.data.status === "error") {
                     toast.error(res.data.message)
                 }
