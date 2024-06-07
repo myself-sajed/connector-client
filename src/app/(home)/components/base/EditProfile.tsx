@@ -34,12 +34,9 @@ const EditProfile = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log("formData:", formData);
-
     useEffect(() => {
         if (user) {
-            const avatarNumber = parseInt((user.avatar.split('-')[1]).charAt(0));
-            console.log("avatar:", avatarNumber, user)
+            const avatarNumber = parseInt((user.avatar.slice(-5)).charAt(0));
             setFormData({
                 name: user.name,
                 email: user.email,
