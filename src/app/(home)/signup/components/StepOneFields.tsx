@@ -8,6 +8,8 @@ import { Loader } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'sonner';
 import debounce from 'lodash/debounce';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 type StepOneFieldsProps<T> = {
     handleInputChange: (e: ChangeEvent<HTMLInputElement>, key: keyof T) => void;
@@ -24,6 +26,7 @@ const StepOneFields = <T extends Record<string, any>>({
 }: StepOneFieldsProps<T>) => {
 
     const [isLoading, setIsLoading] = useState(false);
+    const user = useSelector((state: RootState) => state.user.user)
 
     const validateUsername = (username: string): boolean => {
         const isValid = /^[a-zA-Z0-9_]+$/.test(username);
@@ -38,21 +41,23 @@ const StepOneFields = <T extends Record<string, any>>({
         return isValid;
     };
 
+    console.log("username:", username)
+
     const debouncedCheckUsername = useCallback(
         debounce(async (text: string) => {
             try {
                 if (text.length >= 4 && validateUsername(text)) {
 
+                    console.log("text :", text);
 
-                    if (username.isEditPage && text === username.isEditPage) {
+
+                    if (user?.username === text) {
                         setUsername((prev) => {
                             return { ...prev, username: text, isValid: true }
                         })
 
                         return
-                    }
-
-                    if (!(username.isEditPage && text === username.isEditPage)) {
+                    } else {
                         const res = await api.post('/users/checkUsername', { username: text });
                         if (res.data.status === 'success') {
                             setUsername((prev) => ({
