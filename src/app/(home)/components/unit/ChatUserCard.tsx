@@ -5,13 +5,15 @@ import { cn } from '@/lib/utils'
 import { setContact, setSelectedChat } from '@/redux/slices/activeSlice'
 import { useDispatch } from 'react-redux'
 import { generateChatMessageTime } from '../../helpers/generateMessageTime'
+import { Clock3 } from 'lucide-react'
 
 type PropType = {
     chat: Chat;
     isSelected: boolean;
+    isMe: boolean;
 }
 
-const ChatUserCard = ({ chat, isSelected }: PropType) => {
+const ChatUserCard = ({ chat, isSelected, isMe }: PropType) => {
 
     const contact = chat.contact
     const dispatch = useDispatch()
@@ -32,8 +34,10 @@ const ChatUserCard = ({ chat, isSelected }: PropType) => {
                     <p className="text-sm font-semibold leading-none">
                         {contact.name}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                        {chat.lastMessage?.text}
+                    <p className="text-sm text-muted-foreground flex items-center gap-2">
+                        {chat.lastMessage.status === "optimistic"
+                            && <Clock3 size={13} />}
+                        <span className="flex-1">{chat.lastMessage?.text}</span>
                     </p>
                 </div>
             </div>
