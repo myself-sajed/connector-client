@@ -52,16 +52,19 @@ const StepOneFields = <T extends Record<string, any>>({
                         return
                     }
 
-                    const res = await api.post('/users/checkUsername', { username: text });
-
-                    if (res.data.status === 'success') {
-                        setUsername((prev) => ({
-                            ...prev,
-                            isValid: res.data.isValid,
-                        }));
-                    } else {
-                        toast.error('Internal server error');
+                    if (!(username.isEditPage && text === username.isEditPage)) {
+                        const res = await api.post('/users/checkUsername', { username: text });
+                        if (res.data.status === 'success') {
+                            setUsername((prev) => ({
+                                ...prev,
+                                isValid: res.data.isValid,
+                            }));
+                        } else {
+                            toast.error('Internal server error');
+                        }
                     }
+
+
                 } else {
                     setUsername((prev) => ({
                         ...prev,
