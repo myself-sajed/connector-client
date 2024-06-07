@@ -1,12 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Message } from "@/lib/types";
-import { Check, CheckCheck, ChevronDown, Clock3 } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import generateMessageTime from "../../helpers/generateMessageTime";
-import { useEffect } from "react";
-import socket from "@/lib/client-socket";
-import { Card, CardContent } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import MessageStatus from "./MessageStatus";
 
 interface PropType {
     message: Message;
@@ -80,19 +78,7 @@ function ChatBubble({ message, isMe, setEditMessage, setMessageOperation }: Prop
                     )}
                     <p className='flex items-center justify-end sm:text-[10px] text-[9px] sm:mt-3 mt-1 gap-3'>
                         {generateMessageTime(message.updatedAt)} {message.isEdited && <span>Edited </span>}
-                        {isMe
-                            && <span>
-                                {
-                                    message.status === "optimistic"
-                                        ? <Clock3 size={13} /> :
-                                        message.status === "sent"
-                                            ? <Check size={18} />
-                                            : message.status === "delivered"
-                                                ? <CheckCheck size={18} />
-                                                : <CheckCheck size={18} className="text-blue-900" />
-                                }
-                            </span>
-                        }
+                        <MessageStatus isMe={isMe} status={message.status} />
                     </p>
 
 
