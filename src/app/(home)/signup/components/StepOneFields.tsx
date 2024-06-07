@@ -41,15 +41,13 @@ const StepOneFields = <T extends Record<string, any>>({
         return isValid;
     };
 
-    console.log("username:", username)
-
     const debouncedCheckUsername = useCallback(
-        debounce(async (text: string) => {
+        debounce(async (typeText: string) => {
+
+            let text = typeText.toLowerCase().trim()
+
             try {
                 if (text.length >= 4 && validateUsername(text)) {
-
-                    console.log("text :", text);
-
 
                     if (user?.username === text) {
                         setUsername((prev) => {
@@ -121,7 +119,7 @@ const StepOneFields = <T extends Record<string, any>>({
                     <Button className='secondary border-e-none border-l border-y rounded-e-none' variant="secondary">@</Button>
                     <Input
                         onChange={handleUsernameChange}
-                        value={username.text}
+                        value={username.text.toLowerCase()}
                         type="text"
                         placeholder="username"
                         required
