@@ -146,7 +146,7 @@ const UserChatBar = () => {
                             <div className="divide-y overflow-y-auto w-full overflow-hidden min-h-[calc(100vh-137px)] max-h-[calc(100vh-137px)]">
                                 {
                                     chats.filter((chat) => chat.chatable)?.map((chat: Chat) => (
-                                        <ChatUserCard key={chat._id} chat={chat} isSelected={chat.contact._id === selectedContact?._id} />
+                                        <ChatUserCard isMe={userId === chat.lastMessage.author._id} key={chat._id} chat={chat} isSelected={chat.contact._id === selectedContact?._id} />
                                     ))
                                 }
                             </div>
