@@ -41,7 +41,7 @@ const EditProfile = () => {
                 name: user.name,
                 email: user.email,
                 bio: user.bio,
-                avatar: avatarNumber,
+                avatar: avatarNumber || 1,
             });
 
             setUsername(() => {
