@@ -16,8 +16,8 @@ import { setUserToken } from "../helpers/localStorageHandler"
 
 function Login() {
 
-    const emailRef = useRef<HTMLInputElement>(null)
-    const passwordRef = useRef<HTMLInputElement>(null)
+    const emailRef = useRef<HTMLInputElement>("sajed@gmail.com")
+    const passwordRef = useRef<HTMLInputElement>("sajed")
     const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch()
