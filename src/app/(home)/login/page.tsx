@@ -16,8 +16,10 @@ import { setUserToken } from "../helpers/localStorageHandler"
 
 function Login() {
 
-    const emailRef = useRef<HTMLInputElement>("sajed@gmail.com")
-    const passwordRef = useRef<HTMLInputElement>("sajed")
+    const [formData, setFormData] = useState({
+        email: "sajed@gmail.com",
+        password: "sajed"
+    })
     const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch()
@@ -25,11 +27,12 @@ function Login() {
 
     const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (emailRef.current && passwordRef.current) {
+        const { email, password } = formData
+        if (email && password) {
             setIsLoading(true)
 
             try {
-                const res = await login({ email: emailRef.current.value, password: passwordRef.current.value })
+                const res = await login({ email, password })
 
                 if (res.data.status === "success") {
                     toast.success("Logged in successfully")
@@ -64,7 +67,8 @@ function Login() {
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
-                                ref={emailRef}
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 id="email"
                                 type="email"
                                 placeholder="m@example.com"
@@ -73,7 +77,10 @@ function Login() {
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input ref={passwordRef} id="password" type="password" required />
+                            <Input
+                                value={formData.password}
+                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                id="password" type="password" required />
                         </div>
                         <Button disabled={isLoading} type="submit" className="w-full">
                             {isLoading ? <Loader size={20} className="animate-spin" /> : "Login"}
